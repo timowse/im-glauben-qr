@@ -5,35 +5,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="mobile-web-app-capable" content="yes" />
   <title>ImGlauben – Hirtenkonferenz</title>
   <link rel="icon" href="https://im-glauben.de/cdn/shop/files/www.im-glauben.de_1.jpg?v=1737767526" />
   <link rel="apple-touch-icon" href="https://im-glauben.de/cdn/shop/files/www.im-glauben.de_1.jpg?v=1737767526" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Nunito:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <!-- Cormorant matches the original's Didot-style Roman serif very closely -->
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant:wght@400;500;600&family=Nunito:wght@300;400;500&display=swap" rel="stylesheet" />
 
   <style>
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:        #ede8e0;
-      --white:     #ffffff;
-      --dark:      #1c1c1c;
-      --mid:       #5a5a5a;
-      --muted:     #999;
-      --border:    #cec9c1;
-      --gold:      #b8975a;
-      --gold-bg:   #f5edd8;
+      --bg:      #ede8e0;
+      --white:   #ffffff;
+      --dark:    #1c1c1c;
+      --mid:     #5a5a5a;
+      --muted:   #999;
+      --border:  #cec9c1;
+      --gold:    #b8975a;
+      --gold-bg: #f5edd8;
     }
 
     html, body {
-      width: 100%;
-      height: 100%;
+      width: 100%; height: 100%;
       overflow: hidden;
       background: var(--bg);
     }
@@ -44,116 +39,118 @@
       display: flex;
       align-items: stretch;
       height: 100dvh;
-      padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+      padding:
+        env(safe-area-inset-top, 0px)
+        env(safe-area-inset-right, 0px)
+        env(safe-area-inset-bottom, 0px)
+        env(safe-area-inset-left, 0px);
     }
 
-    /* ── LEFT PANEL ────────────────────────────── */
+    /* ══════════════════════════════════════
+       LEFT PANEL
+    ══════════════════════════════════════ */
     .left {
-      flex: 1 1 45%;
+      flex: 0 0 46%;
       display: flex;
       flex-direction: column;
       justify-content: center;
-      padding: clamp(24px, 4vw, 56px) clamp(20px, 3.5vw, 48px);
-      gap: clamp(12px, 2vh, 22px);
+      padding: clamp(20px, 3.5vw, 52px) clamp(20px, 3.5vw, 52px);
+      gap: clamp(10px, 1.8vh, 22px);
     }
 
-    /* Logo */
-    .logo-block {
+    /* ── Wordmark ─────────────────────────── */
+    .wordmark {
       display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 10px;
+      align-items: center;          /* vertically center all pieces */
+      /* Cross SVG overflows top/bottom – give it room */
+      padding-top: clamp(10px, 2.5vh, 32px);
+      padding-bottom: clamp(4px, 1vh, 14px);
     }
 
-    .logo-img {
-      /* Full square image, no cropping */
-      width: clamp(80px, 11vw, 150px);
-      height: auto;
-      aspect-ratio: 1 / 1;
-      object-fit: contain;
-      object-position: center;
-      display: block;
-    }
-
-    .brand-name {
-      font-family: 'Instrument Sans', sans-serif;
-      font-size: clamp(22px, 3.2vw, 42px);
-      font-weight: 600;
-      letter-spacing: 0.02em;
+    .wm-text {
+      font-family: 'Cormorant', serif;
+      font-weight: 400;
+      font-size: clamp(40px, 7vw, 96px);
       line-height: 1;
+      color: var(--dark);
+      letter-spacing: 0.02em;
+      /* prevent font from clipping descenders */
+      display: inline-block;
     }
 
+    .wm-cross {
+      /* The SVG cross – sized relative to the font */
+      display: inline-block;
+      width:  clamp(28px, 4.2vw, 58px);
+      /* Height: cross should be ~2× the cap height */
+      height: clamp(72px, 12vh, 160px);
+      flex-shrink: 0;
+      /* Nudge the cross so its crossbar aligns with letter cap-height */
+      margin-top: clamp(-22px, -3.5vh, -48px);
+      margin-left: clamp(-2px, -0.2vw, -4px);
+      margin-right: clamp(-2px, -0.2vw, -4px);
+      /* keep it visually on-center with the letters */
+      align-self: flex-start;
+    }
+
+    /* ── Tagline below wordmark ───────────── */
     .tagline {
-      font-size: clamp(11px, 1.1vw, 15px);
+      font-size: clamp(10px, 1vw, 14px);
       color: var(--muted);
-      letter-spacing: 0.07em;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
       font-weight: 400;
     }
 
-    /* Divider */
+    /* ── Divider ──────────────────────────── */
     .divider {
-      width: 48px;
-      height: 2px;
+      width: 48px; height: 1.5px;
       background: var(--border);
       border-radius: 2px;
       flex-shrink: 0;
     }
 
-    /* Offer block */
-    .offer-block {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
+    /* ── Offer ────────────────────────────── */
     .discount {
-      font-family: 'Instrument Sans', sans-serif;
-      font-size: clamp(36px, 6vw, 82px);
-      font-weight: 600;
-      line-height: 1;
+      font-family: 'Cormorant', serif;
+      font-size: clamp(42px, 7.5vw, 100px);
+      font-weight: 500;
+      line-height: 0.95;
       color: var(--dark);
     }
-
     .discount em {
       font-style: normal;
       color: var(--gold);
     }
-
-    .discount-label {
-      font-size: clamp(13px, 1.4vw, 18px);
-      font-weight: 500;
+    .discount-sub {
+      font-size: clamp(12px, 1.3vw, 17px);
       color: var(--mid);
-      letter-spacing: 0.01em;
+      font-weight: 500;
+      margin-top: 2px;
     }
 
-    /* Event badge */
-    .event-badge {
+    /* ── Event badge ──────────────────────── */
+    .badge {
       display: inline-flex;
       align-items: center;
       gap: 7px;
       background: var(--gold-bg);
       border: 1.5px solid var(--gold);
       border-radius: 100px;
-      padding: clamp(5px, 0.8vh, 8px) clamp(12px, 1.5vw, 20px);
+      padding: clamp(4px, 0.6vh, 8px) clamp(12px, 1.5vw, 20px);
       width: fit-content;
     }
-
-    .event-badge .cross {
+    .badge .cross-sym { color: var(--gold); font-size: clamp(11px, 1vw, 15px); }
+    .badge span {
+      font-family: 'Nunito', sans-serif;
+      font-size: clamp(10px, 0.9vw, 13px);
+      font-weight: 700;
       color: var(--gold);
-      font-size: clamp(12px, 1.1vw, 16px);
-    }
-
-    .event-badge span {
-      font-family: 'Instrument Sans', sans-serif;
-      font-size: clamp(11px, 1vw, 14px);
-      font-weight: 600;
-      color: var(--gold);
-      letter-spacing: 0.05em;
+      letter-spacing: 0.06em;
       text-transform: uppercase;
     }
 
-    /* URL chip */
+    /* ── URL chip ─────────────────────────── */
     .url-chip {
       display: inline-flex;
       align-items: center;
@@ -162,121 +159,126 @@
       background: rgba(0,0,0,0.05);
       border: 1px solid var(--border);
       border-radius: 100px;
-      padding: clamp(5px, 0.7vh, 8px) clamp(12px, 1.4vw, 18px);
-      font-family: 'Instrument Sans', sans-serif;
-      font-size: clamp(12px, 1.1vw, 15px);
+      padding: clamp(4px, 0.6vh, 8px) clamp(12px, 1.4vw, 18px);
+      font-size: clamp(11px, 1vw, 14px);
       font-weight: 500;
       color: var(--mid);
       text-decoration: none;
     }
 
-    /* Fine print */
-    .fine-print {
-      font-size: clamp(10px, 0.85vw, 13px);
+    /* ── Fine print ───────────────────────── */
+    .fine {
+      font-size: clamp(10px, 0.8vw, 12px);
       color: var(--muted);
-      line-height: 1.5;
+      line-height: 1.6;
     }
 
-    /* ── SEPARATOR ─────────────────────────────── */
+    /* ══════════════════════════════════════
+       SEPARATOR
+    ══════════════════════════════════════ */
     .sep {
       width: 1px;
       background: var(--border);
+      margin: clamp(18px, 3vh, 40px) 0;
       flex-shrink: 0;
-      margin: clamp(20px, 3vh, 40px) 0;
     }
 
-    /* ── RIGHT PANEL ───────────────────────────── */
+    /* ══════════════════════════════════════
+       RIGHT PANEL
+    ══════════════════════════════════════ */
     .right {
-      flex: 1 1 55%;
+      flex: 1 1 54%;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: clamp(24px, 4vw, 56px) clamp(20px, 3.5vw, 52px);
-      gap: clamp(12px, 2vh, 20px);
+      padding: clamp(20px, 3.5vw, 52px);
+      gap: clamp(10px, 1.8vh, 20px);
     }
 
-    /* QR frame */
+    /* ── QR frame ─────────────────────────── */
     .qr-frame {
       background: var(--white);
       border: 1.5px solid var(--border);
       border-radius: 20px;
-      padding: clamp(16px, 2.5vw, 32px);
-      box-shadow: 0 6px 32px rgba(0,0,0,0.08);
+      padding: clamp(14px, 2.2vw, 30px);
+      box-shadow: 0 6px 32px rgba(0,0,0,0.09);
       position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
     }
 
-    /* gold corner accents */
-    .qr-frame::before,
-    .qr-frame::after,
-    .qr-frame .corner-bl,
-    .qr-frame .corner-tr {
+    /* gold corners */
+    .qr-frame::before, .qr-frame::after,
+    .qr-frame .c-bl, .qr-frame .c-tr {
       content: '';
       position: absolute;
-      width: 22px;
-      height: 22px;
+      width: 20px; height: 20px;
       border-color: var(--gold);
       border-style: solid;
     }
-    .qr-frame::before { top: 12px; left: 12px; border-width: 2px 0 0 2px; border-radius: 3px 0 0 0; }
-    .qr-frame::after  { bottom: 12px; right: 12px; border-width: 0 2px 2px 0; border-radius: 0 0 3px 0; }
-    .qr-frame .corner-bl { bottom: 12px; left: 12px; border-width: 0 0 2px 2px; border-radius: 0 0 0 3px; }
-    .qr-frame .corner-tr { top: 12px; right: 12px; border-width: 2px 2px 0 0; border-radius: 0 3px 0 0; }
+    .qr-frame::before { top:12px; left:12px;   border-width:2px 0 0 2px; border-radius:3px 0 0 0; }
+    .qr-frame::after  { bottom:12px; right:12px; border-width:0 2px 2px 0; border-radius:0 0 3px 0; }
+    .qr-frame .c-bl   { bottom:12px; left:12px;  border-width:0 0 2px 2px; border-radius:0 0 0 3px; }
+    .qr-frame .c-tr   { top:12px; right:12px;   border-width:2px 2px 0 0; border-radius:0 3px 0 0; }
 
-    #qrCanvas, #qrImg {
-      display: block;
-      border-radius: 4px;
-    }
+    #qrCanvas { display:block; border-radius:4px; }
 
+    /* ── Scan hint ────────────────────────── */
     .scan-hint {
-      font-size: clamp(11px, 1vw, 14px);
+      font-size: clamp(10px, 0.9vw, 13px);
       color: var(--muted);
-      letter-spacing: 0.05em;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
-      text-align: center;
       display: flex;
       align-items: center;
       gap: 10px;
       width: 100%;
-      max-width: 360px;
+      max-width: 380px;
     }
-    .scan-hint::before,
-    .scan-hint::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: var(--border);
+    .scan-hint::before, .scan-hint::after {
+      content: ''; flex:1; height:1px; background:var(--border);
     }
   </style>
 </head>
 <body>
 
-  <!-- LEFT -->
+  <!-- ══ LEFT ═══════════════════════════════════ -->
   <div class="left">
 
-    <div class="logo-block">
-      <img
-        class="logo-img"
-        src="https://im-glauben.de/cdn/shop/files/www.im-glauben.de_1.jpg?v=1737767526"
-        alt="ImGlauben Logo"
-        loading="eager"
-      />
-      <div class="brand-name">ImGlauben</div>
-      <div class="tagline">Christliche Geschenk- &amp; Dekoartikel</div>
+    <!-- Full wordmark: IM [cross] GLAUBEN -->
+    <div class="wordmark">
+      <span class="wm-text">IM</span>
+
+      <!-- Hand-drawn cross SVG matching original style -->
+      <svg class="wm-cross" viewBox="0 0 56 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <filter id="rough" x="-20%" y="-20%" width="140%" height="140%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="4" seed="3" result="noise"/>
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="2.2" xChannelSelector="R" yChannelSelector="G"/>
+          </filter>
+        </defs>
+        <!-- vertical stroke – full height of viewBox -->
+        <rect x="22" y="0" width="12" height="150" rx="4" fill="#1c1c1c" filter="url(#rough)"/>
+        <!-- horizontal crossbar – sits at ~38% from top (matching original) -->
+        <rect x="0" y="48" width="56" height="11" rx="4" fill="#1c1c1c" filter="url(#rough)"/>
+      </svg>
+
+      <span class="wm-text">GLAUBEN</span>
     </div>
+
+    <div class="tagline">Christliche Geschenk- &amp; Dekoartikel</div>
 
     <div class="divider"></div>
 
-    <div class="offer-block">
+    <div>
       <div class="discount"><em>20&thinsp;%</em> auf alles</div>
-      <div class="discount-label">Exklusiv während der Hirtenkonferenz</div>
+      <div class="discount-sub">Exklusiv während der Hirtenkonferenz</div>
     </div>
 
-    <div class="event-badge">
-      <span class="cross">✝</span>
+    <div class="badge">
+      <span class="cross-sym">✝</span>
       <span>Hirtenkonferenz – Sonderangebot</span>
     </div>
 
@@ -288,22 +290,21 @@
       im-glauben.de
     </a>
 
-    <div class="fine-print">
-      Kein Code nötig – der Rabatt<br />
-      wird automatisch im Shop angezeigt.
+    <div class="fine">
+      Kein Code nötig – der Rabatt<br/>wird automatisch im Shop angezeigt.
     </div>
 
   </div>
 
-  <!-- SEPARATOR -->
+  <!-- ══ SEPARATOR ══════════════════════════════ -->
   <div class="sep"></div>
 
-  <!-- RIGHT -->
+  <!-- ══ RIGHT ══════════════════════════════════ -->
   <div class="right">
 
     <div class="qr-frame">
-      <div class="corner-bl"></div>
-      <div class="corner-tr"></div>
+      <div class="c-bl"></div>
+      <div class="c-tr"></div>
       <canvas id="qrCanvas"></canvas>
     </div>
 
@@ -315,18 +316,19 @@
     const TARGET = "https://im-glauben.de";
 
     function qrSize() {
-      // Fill roughly 72% of the shorter viewport side (height in landscape)
-      return Math.floor(Math.min(window.innerHeight * 0.72, window.innerWidth * 0.42, 420));
+      return Math.floor(Math.min(
+        window.innerHeight * 0.70,
+        window.innerWidth  * 0.44,
+        440
+      ));
     }
 
     function fallback(size) {
       const canvas = document.getElementById('qrCanvas');
       const img = document.createElement('img');
-      img.id = 'qrImg';
       img.src = `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encodeURIComponent(TARGET)}&qzone=1&color=1c1c1c&bgcolor=ffffff`;
-      img.width = size;
-      img.height = size;
-      img.alt = 'QR Code für im-glauben.de';
+      img.width = size; img.height = size;
+      img.alt = 'QR Code';
       canvas.replaceWith(img);
     }
 
@@ -336,8 +338,7 @@
       s.src = 'https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js';
       s.onload = () => {
         QRCode.toCanvas(document.getElementById('qrCanvas'), TARGET, {
-          width: size,
-          margin: 1,
+          width: size, margin: 1,
           color: { dark: '#1c1c1c', light: '#ffffff' },
           errorCorrectionLevel: 'H'
         }, err => { if (err) fallback(size); });
@@ -346,14 +347,12 @@
       document.head.appendChild(s);
     }
 
-    // Wait for fonts/layout to settle
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', render);
     } else {
       render();
     }
 
-    // Re-render on orientation change
     window.addEventListener('orientationchange', () => setTimeout(render, 300));
   </script>
 
