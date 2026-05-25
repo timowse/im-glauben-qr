@@ -9,7 +9,7 @@
   <link rel="icon" href="https://im-glauben.de/cdn/shop/files/www.im-glauben.de_1.jpg?v=1737767526" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Nunito:wght@300;400;500&display=swap" rel="stylesheet" />
 
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -19,435 +19,623 @@
       --white:    #ffffff;
       --dark:     #1c1c1c;
       --mid:      #5a5a5a;
-      --muted:    #999;
-      --border:   #cec9c1;
+      --muted:    #9a9690;
+      --border:   #d4cfc8;
       --gold:     #b8975a;
       --gold-bg:  #f5edd8;
-      --green:    #4a9c6d;
-      --green-bg: #e8f5ee;
+      --gold-dim: rgba(184,151,90,.18);
     }
 
-    html, body { width: 100%; height: 100%; overflow: hidden; background: var(--bg); }
-
-    body {
-      font-family: 'Nunito', sans-serif;
+    html, body {
+      width: 100%; height: 100%;
+      overflow: hidden;
+      background: var(--dark);
+      font-family: 'Instrument Sans', sans-serif;
       color: var(--dark);
-      display: flex;
-      align-items: stretch;
-      height: 100dvh;
-      padding:
-        env(safe-area-inset-top, 0px)
-        env(safe-area-inset-right, 0px)
-        env(safe-area-inset-bottom, 0px)
-        env(safe-area-inset-left, 0px);
+      -webkit-font-smoothing: antialiased;
     }
 
-    /* ══ LEFT ═══════════════════════════════ */
-    .left {
-      flex: 0 0 46%;
+    /* ══════════════════════════════════════════
+       SLIDE SYSTEM
+    ══════════════════════════════════════════ */
+    #stage {
+      position: fixed; inset: 0;
+      padding: env(safe-area-inset-top,0) env(safe-area-inset-right,0)
+               env(safe-area-inset-bottom,0) env(safe-area-inset-left,0);
+    }
+
+    .slide {
+      position: absolute; inset: 0;
+      opacity: 0;
+      transition: opacity .9s ease;
+      pointer-events: none;
+    }
+    .slide.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    /* ── progress bar ──────────────────────── */
+    #progress {
+      position: fixed; bottom: 0; left: 0; right: 0;
+      height: 3px;
+      background: rgba(255,255,255,.10);
+      z-index: 99;
+    }
+    #progress-bar {
+      height: 100%;
+      background: var(--gold);
+      width: 0%;
+      transition: none;
+    }
+
+    /* ── slide dots ───────────────────────── */
+    #dots {
+      position: fixed; bottom: 14px; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 6px; z-index: 98;
+    }
+    .dot {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: rgba(255,255,255,.25);
+      transition: background .3s, transform .3s;
+    }
+    .dot.active {
+      background: var(--gold);
+      transform: scale(1.4);
+    }
+
+    /* ══════════════════════════════════════════
+       SLIDE 0 – QR CODE
+    ══════════════════════════════════════════ */
+    #slide-qr {
+      background: var(--bg);
       display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: clamp(20px, 3.5vw, 52px);
-      gap: clamp(10px, 1.8vh, 22px);
+    }
+
+    .qr-left {
+      flex: 0 0 46%;
+      display: flex; flex-direction: column; justify-content: center;
+      padding: clamp(28px,4vw,64px);
+      gap: clamp(12px,2vh,24px);
     }
 
     .logo-img {
       display: block;
-      width: clamp(160px, 22vw, 320px);
+      width: clamp(140px,20vw,260px);
       height: auto;
       mix-blend-mode: multiply;
     }
 
-    .tagline {
-      font-size: clamp(10px, 1vw, 14px);
+    .qr-tagline {
+      font-size: clamp(10px,.9vw,13px);
       color: var(--muted);
-      letter-spacing: 0.1em;
+      letter-spacing: .10em;
       text-transform: uppercase;
     }
 
-    .divider { width: 48px; height: 1.5px; background: var(--border); border-radius: 2px; flex-shrink: 0; }
+    .qr-divider { width: 40px; height: 1px; background: var(--border); }
 
-    .discount {
-      font-size: clamp(44px, 7.5vw, 96px);
-      font-weight: 700;
-      line-height: 0.95;
+    .qr-offer-num {
+      font-size: clamp(52px,9vw,120px);
+      font-weight: 600;
+      line-height: .9;
+      letter-spacing: -.02em;
     }
-    .discount em { font-style: normal; color: var(--gold); }
-    .discount-sub { font-size: clamp(12px, 1.3vw, 17px); color: var(--mid); font-weight: 500; margin-top: 4px; }
-
-    .badge {
-      display: inline-flex; align-items: center; gap: 7px;
-      background: var(--gold-bg); border: 1.5px solid var(--gold); border-radius: 100px;
-      padding: clamp(4px,.6vh,8px) clamp(12px,1.5vw,20px); width: fit-content;
+    .qr-offer-num em { font-style: normal; color: var(--gold); }
+    .qr-offer-sub {
+      font-size: clamp(13px,1.3vw,18px);
+      font-weight: 400;
+      color: var(--mid);
+      margin-top: 2px;
     }
-    .badge .cross-sym { color: var(--gold); font-size: clamp(11px,1vw,15px); }
-    .badge span { font-size: clamp(10px,.9vw,13px); font-weight: 700; color: var(--gold); letter-spacing: .06em; text-transform: uppercase; }
 
-    .url-chip {
+    .qr-badge {
+      display: inline-flex; align-items: center; gap: 8px; width: fit-content;
+      border: 1.5px solid var(--gold); border-radius: 100px;
+      background: var(--gold-bg);
+      padding: clamp(5px,.7vh,9px) clamp(14px,1.6vw,22px);
+    }
+    .qr-badge .cross { color: var(--gold); font-size: clamp(11px,1vw,14px); }
+    .qr-badge span {
+      font-size: clamp(10px,.85vw,12px); font-weight: 600;
+      color: var(--gold); letter-spacing: .07em; text-transform: uppercase;
+    }
+
+    .qr-url {
       display: inline-flex; align-items: center; gap: 7px; width: fit-content;
       background: rgba(0,0,0,.05); border: 1px solid var(--border); border-radius: 100px;
-      padding: clamp(4px,.6vh,8px) clamp(12px,1.4vw,18px);
-      font-size: clamp(11px,1vw,14px); font-weight: 500; color: var(--mid); text-decoration: none;
+      padding: clamp(4px,.5vh,7px) clamp(12px,1.3vw,18px);
+      font-size: clamp(11px,.95vw,14px); color: var(--mid);
+      text-decoration: none;
     }
 
-    .fine { font-size: clamp(10px,.8vw,12px); color: var(--muted); line-height: 1.6; }
+    .qr-note { font-size: clamp(10px,.8vw,12px); color: var(--muted); line-height: 1.6; }
 
-    /* ══ SEPARATOR ═══════════════════════════ */
-    .sep { width: 1px; background: var(--border); margin: clamp(18px,3vh,40px) 0; flex-shrink: 0; }
+    /* right side */
+    .qr-sep { width: 1px; background: var(--border); margin: clamp(20px,3vh,48px) 0; }
 
-    /* ══ RIGHT ═══════════════════════════════ */
-    .right {
-      flex: 1 1 54%;
+    .qr-right {
+      flex: 1;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
-      padding: clamp(20px,3.5vw,52px);
-      gap: clamp(10px,1.8vh,20px);
+      padding: clamp(20px,3vw,48px);
+      gap: clamp(12px,2vh,20px);
     }
 
-    /* ── QR glow wrap ───────────────────────── */
-    .qr-glow {
-      position: relative;
-      border-radius: 24px;
-    }
-
-    /* breathing pulse — always on */
-    .qr-glow::before {
+    .qr-frame-wrap { position: relative; }
+    .qr-frame-wrap::before {
       content: '';
-      position: absolute; inset: -10px; border-radius: 30px;
-      animation: breathe 2.8s ease-in-out infinite;
-      pointer-events: none; z-index: 0;
+      position: absolute; inset: -12px; border-radius: 28px;
+      animation: qr-breathe 3s ease-in-out infinite;
     }
-    @keyframes breathe {
-      0%   { box-shadow: 0 0  8px  4px rgba(184,151,90,.10); }
-      50%  { box-shadow: 0 0 32px 14px rgba(184,151,90,.40); }
-      100% { box-shadow: 0 0  8px  4px rgba(184,151,90,.10); }
+    @keyframes qr-breathe {
+      0%,100% { box-shadow: 0 0 10px 2px rgba(184,151,90,.08); }
+      50%      { box-shadow: 0 0 30px 12px rgba(184,151,90,.30); }
     }
 
-    /* on scan: gold burst */
-    .qr-glow.scanned::before {
-      animation: burst 0.7s ease-out forwards !important;
-    }
-    @keyframes burst {
-      0%   { box-shadow: 0 0  0px  0px rgba(184,151,90,.85); }
-      40%  { box-shadow: 0 0 55px 30px rgba(184,151,90,.50); }
-      100% { box-shadow: 0 0 80px 50px rgba(184,151,90,.00); }
-    }
-
-    /* ── QR card ───────────────────────────── */
     .qr-frame {
       background: var(--white); border: 1.5px solid var(--border); border-radius: 20px;
-      padding: clamp(14px,2.2vw,30px);
-      box-shadow: 0 6px 32px rgba(0,0,0,.09);
+      padding: clamp(14px,2vw,28px);
+      box-shadow: 0 8px 40px rgba(0,0,0,.10);
       position: relative; z-index: 1;
       display: flex; align-items: center; justify-content: center;
-      transition: box-shadow 0.3s ease;
-    }
-    .qr-glow.scanned .qr-frame {
-      box-shadow: 0 0 0 3px var(--gold), 0 6px 32px rgba(0,0,0,.09);
     }
 
-    /* gold corners */
+    /* gold corner accents */
     .qr-frame::before, .qr-frame::after, .qr-frame .c-bl, .qr-frame .c-tr {
-      content: ''; position: absolute; width: 20px; height: 20px; border-color: var(--gold); border-style: solid;
+      content: ''; position: absolute; width: 18px; height: 18px;
+      border-color: var(--gold); border-style: solid;
     }
-    .qr-frame::before { top:12px; left:12px;    border-width:2px 0 0 2px; border-radius:3px 0 0 0; }
-    .qr-frame::after  { bottom:12px; right:12px; border-width:0 2px 2px 0; border-radius:0 0 3px 0; }
-    .qr-frame .c-bl   { bottom:12px; left:12px;  border-width:0 0 2px 2px; border-radius:0 0 0 3px; }
-    .qr-frame .c-tr   { top:12px; right:12px;    border-width:2px 2px 0 0; border-radius:0 3px 0 0; }
+    .qr-frame::before { top:10px; left:10px;    border-width:2px 0 0 2px; border-radius:3px 0 0 0; }
+    .qr-frame::after  { bottom:10px; right:10px; border-width:0 2px 2px 0; border-radius:0 0 3px 0; }
+    .qr-frame .c-bl   { bottom:10px; left:10px;  border-width:0 0 2px 2px; border-radius:0 0 0 3px; }
+    .qr-frame .c-tr   { top:10px; right:10px;    border-width:2px 2px 0 0; border-radius:0 3px 0 0; }
 
-    #qrCanvas { display: block; border-radius: 4px; }
+    #qrCanvas { display:block; border-radius:3px; }
 
-    /* ── Status dot ────────────────────────── */
-    .status-row {
-      display: flex; align-items: center; gap: 7px;
+    .qr-hint {
       font-size: clamp(10px,.85vw,12px); color: var(--muted);
-      letter-spacing: .05em; text-transform: uppercase;
-    }
-    .status-dot {
-      width: 7px; height: 7px; border-radius: 50%;
-      background: var(--muted);
-      transition: background 0.4s;
-    }
-    .status-dot.ready   { background: #4a9c6d; box-shadow: 0 0 6px rgba(74,156,109,.6); }
-    .status-dot.waiting { background: var(--gold); box-shadow: 0 0 6px rgba(184,151,90,.6); }
-
-    /* ── Scan hint ─────────────────────────── */
-    .scan-hint {
-      font-size: clamp(10px,.9vw,13px); color: var(--muted);
       letter-spacing: .08em; text-transform: uppercase;
-      display: flex; align-items: center; gap: 10px;
-      width: 100%; max-width: 380px;
+      display: flex; align-items: center; gap: 10px; width: 100%; max-width: 340px;
     }
-    .scan-hint::before, .scan-hint::after { content:''; flex:1; height:1px; background:var(--border); }
+    .qr-hint::before, .qr-hint::after { content:''; flex:1; height:1px; background:var(--border); }
 
-    /* ══ SUCCESS OVERLAY ══════════════════════ */
-    .overlay {
-      position: fixed; inset: 0;
-      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px;
-      background: rgba(237,232,224,.93);
-      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-      z-index: 100;
-      opacity: 0; pointer-events: none;
-      transition: opacity 0.3s ease;
-    }
-    .overlay.show { opacity: 1; pointer-events: all; }
-
-    .check-ring {
-      width: clamp(90px,14vw,150px); height: clamp(90px,14vw,150px);
-      border-radius: 50%; border: 3px solid var(--green);
+    /* ══════════════════════════════════════════
+       SLIDE 1 – HERO
+    ══════════════════════════════════════════ */
+    #slide-hero {
+      background: var(--dark);
       display: flex; align-items: center; justify-content: center;
-      transform: scale(0); opacity: 0;
-      transition: none;
-    }
-    .overlay.show .check-ring {
-      animation: pop 0.45s cubic-bezier(.34,1.56,.64,1) 0.05s forwards;
-    }
-    @keyframes pop {
-      to { transform: scale(1); opacity: 1; }
     }
 
-    .check-icon { font-size: clamp(36px,6vw,70px); color: var(--green); line-height: 1; }
+    .hero-inner {
+      display: flex; flex-direction: column; align-items: center;
+      gap: clamp(12px,2vh,22px); padding: clamp(24px,4vw,60px);
+      text-align: center;
+    }
 
-    .overlay-title {
-      font-size: clamp(20px,3vw,36px); font-weight: 700; color: var(--dark); letter-spacing: .01em;
+    .hero-logo {
+      width: clamp(100px,14vw,200px); height: auto;
+      /* invert for dark background */
+      filter: invert(1);
+      opacity: .9;
+    }
+
+    .hero-rule { width: 40px; height: 1px; background: rgba(255,255,255,.2); }
+
+    .hero-eyebrow {
+      font-size: clamp(10px,.9vw,13px); font-weight: 500;
+      color: var(--gold); letter-spacing: .12em; text-transform: uppercase;
+    }
+
+    .hero-num {
+      font-size: clamp(80px,16vw,220px); font-weight: 600;
+      line-height: .88; color: var(--white); letter-spacing: -.03em;
+    }
+    .hero-num em { font-style: normal; color: var(--gold); }
+
+    .hero-label {
+      font-size: clamp(18px,3vw,42px); font-weight: 400;
+      color: rgba(255,255,255,.75); letter-spacing: .01em;
+    }
+
+    .hero-sub {
+      font-family: 'Nunito', sans-serif;
+      font-size: clamp(12px,1.1vw,16px); font-weight: 300;
+      color: rgba(255,255,255,.4); letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+
+    /* ══════════════════════════════════════════
+       SLIDE 2+ – PRODUCTS
+    ══════════════════════════════════════════ */
+    .slide-products {
+      display: flex;
+    }
+
+    .product-panel {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+    }
+    .product-panel + .product-panel {
+      border-left: 1px solid rgba(255,255,255,.08);
+    }
+
+    .product-img {
+      position: absolute; inset: 0;
+      background-size: cover;
+      background-position: center;
+      /* slow Ken Burns drift */
+      animation: ken-burns 12s ease-in-out infinite alternate;
+    }
+    @keyframes ken-burns {
+      from { transform: scale(1.00); }
+      to   { transform: scale(1.06); }
+    }
+
+    /* gradient overlay */
+    .product-panel::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(28,28,28,0) 40%,
+        rgba(28,28,28,.55) 72%,
+        rgba(28,28,28,.88) 100%
+      );
+      z-index: 1;
+    }
+
+    .product-info {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: clamp(16px,2.5vw,36px) clamp(18px,2.5vw,36px) clamp(22px,3vh,44px);
+      z-index: 2;
+      display: flex; flex-direction: column; gap: 5px;
+    }
+
+    .product-name {
+      font-size: clamp(13px,1.6vw,22px); font-weight: 500;
+      color: var(--white); line-height: 1.25;
+      letter-spacing: .01em;
+    }
+
+    .product-prices {
+      display: flex; align-items: baseline; gap: 10px;
+    }
+    .product-price-orig {
+      font-family: 'Nunito', sans-serif;
+      font-size: clamp(11px,1vw,14px); font-weight: 300;
+      color: rgba(255,255,255,.45);
+      text-decoration: line-through;
+    }
+    .product-price-sale {
+      font-size: clamp(14px,1.6vw,22px); font-weight: 600;
+      color: var(--gold);
+    }
+    .product-badge {
+      display: inline-block;
+      background: var(--gold); color: var(--dark);
+      font-size: clamp(9px,.8vw,11px); font-weight: 700;
+      letter-spacing: .06em; text-transform: uppercase;
+      border-radius: 3px; padding: 2px 7px;
+      margin-left: 4px; vertical-align: middle;
+    }
+
+    /* logo watermark on product slides */
+    .prod-logo-mark {
+      position: absolute; top: clamp(14px,2vw,28px); left: 50%; transform: translateX(-50%);
+      z-index: 2;
+      display: flex; align-items: center; gap: 8px;
+      white-space: nowrap;
+    }
+    .prod-logo-mark img {
+      height: clamp(22px,3vw,40px); width: auto;
+      filter: brightness(0) invert(1);
+      opacity: .7;
+    }
+
+    /* ══════════════════════════════════════════
+       SCAN TOAST
+    ══════════════════════════════════════════ */
+    #toast {
+      position: fixed; top: clamp(14px,2.5vw,28px); right: clamp(14px,2.5vw,28px);
+      z-index: 200;
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      padding: 12px 20px 12px 14px;
+      display: flex; align-items: center; gap: 12px;
+      box-shadow: 0 8px 32px rgba(0,0,0,.12);
+      font-size: 13px; color: var(--dark);
+      transform: translateY(-12px);
       opacity: 0;
+      transition: opacity .35s ease, transform .35s ease;
+      pointer-events: none;
     }
-    .overlay.show .overlay-title {
-      animation: fade-up 0.35s ease 0.3s forwards;
+    #toast.show { opacity:1; transform:translateY(0); }
+    .toast-icon {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: #e8f5ee; border: 1.5px solid #4a9c6d;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px; color: #4a9c6d; flex-shrink: 0;
     }
-
-    .overlay-sub {
-      font-size: clamp(13px,1.3vw,17px); color: var(--mid);
-      opacity: 0;
-    }
-    .overlay.show .overlay-sub {
-      animation: fade-up 0.35s ease 0.45s forwards;
-    }
-
-    @keyframes fade-up {
-      from { opacity:0; transform: translateY(8px); }
-      to   { opacity:1; transform: translateY(0); }
-    }
-
-    .overlay-dismiss {
-      margin-top: 4px;
-      font-size: clamp(11px,.9vw,13px); color: var(--muted);
-      opacity: 0;
-    }
-    .overlay.show .overlay-dismiss {
-      animation: fade-up 0.35s ease 0.6s forwards;
-    }
-
-    /* scan counter badge */
-    .scan-count {
-      position: absolute; top: clamp(12px,2vh,20px); right: clamp(12px,2vw,20px);
-      background: var(--gold-bg); border: 1.5px solid var(--gold); border-radius: 100px;
-      padding: 4px 14px;
-      font-size: clamp(11px,.9vw,14px); font-weight: 700; color: var(--gold);
-      letter-spacing: .04em;
-      display: none;
-    }
-    .scan-count.visible { display: block; }
+    .toast-title { font-weight: 600; font-size: 13px; }
+    .toast-sub { font-size: 11px; color: var(--muted); margin-top: 1px; }
   </style>
 </head>
 <body>
 
-  <!-- ══ LEFT ════════════════════════════════ -->
-  <div class="left">
-    <img class="logo-img"
-      src="https://im-glauben.de/cdn/shop/files/www.im-glauben.de.png?v=1693408582"
-      alt="ImGlauben" loading="eager" />
+<div id="stage">
 
-    <div class="tagline">Christliche Geschenk- &amp; Dekoartikel</div>
-    <div class="divider"></div>
+  <!-- ══ SLIDE 0: QR ════════════════════════ -->
+  <div class="slide active" id="slide-qr">
 
-    <div>
-      <div class="discount"><em>20&thinsp;%</em> auf alles</div>
-      <div class="discount-sub">Exklusiv während der Hirtenkonferenz</div>
-    </div>
+    <div class="qr-left">
+      <img class="logo-img"
+        src="https://im-glauben.de/cdn/shop/files/www.im-glauben.de.png?v=1693408582"
+        alt="ImGlauben" />
 
-    <div class="badge">
-      <span class="cross-sym">✝</span>
-      <span>Hirtenkonferenz – Sonderangebot</span>
-    </div>
+      <div class="qr-tagline">Christliche Geschenk- &amp; Dekoartikel</div>
 
-    <a class="url-chip" href="https://im-glauben.de" target="_blank">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/>
-        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-      </svg>
-      im-glauben.de
-    </a>
+      <div class="qr-divider"></div>
 
-    <div class="fine">
-      Kein Code nötig – der Rabatt<br/>wird automatisch im Shop angezeigt.
-    </div>
-  </div>
-
-  <!-- ══ SEPARATOR ═══════════════════════════ -->
-  <div class="sep"></div>
-
-  <!-- ══ RIGHT ═══════════════════════════════ -->
-  <div class="right">
-
-    <!-- scan counter -->
-    <div class="scan-count" id="scanCount"></div>
-
-    <div class="qr-glow" id="qrGlow">
-      <div class="qr-frame">
-        <div class="c-bl"></div>
-        <div class="c-tr"></div>
-        <canvas id="qrCanvas"></canvas>
+      <div>
+        <div class="qr-offer-num"><em>20&thinsp;%</em> auf alles</div>
+        <div class="qr-offer-sub">Exklusiv während der Hirtenkonferenz</div>
       </div>
+
+      <div class="qr-badge">
+        <span class="cross">✝</span>
+        <span>Hirtenkonferenz · Sonderangebot</span>
+      </div>
+
+      <a class="qr-url" href="https://im-glauben.de" target="_blank">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/>
+          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+        </svg>
+        im-glauben.de
+      </a>
+
+      <div class="qr-note">Kein Code nötig – Rabatt wird<br/>automatisch im Shop angezeigt.</div>
     </div>
 
-    <div class="scan-hint">Jetzt scannen &amp; sparen</div>
+    <div class="qr-sep"></div>
 
-    <div class="status-row">
-      <div class="status-dot" id="statusDot"></div>
-      <span id="statusText">Verbinde…</span>
+    <div class="qr-right">
+      <div class="qr-frame-wrap">
+        <div class="qr-frame">
+          <div class="c-bl"></div>
+          <div class="c-tr"></div>
+          <canvas id="qrCanvas"></canvas>
+        </div>
+      </div>
+      <div class="qr-hint">Jetzt scannen &amp; sparen</div>
     </div>
 
   </div>
 
-  <!-- ══ SUCCESS OVERLAY ══════════════════════ -->
-  <div class="overlay" id="overlay" onclick="hideOverlay()">
-    <div class="check-ring">
-      <span class="check-icon">✓</span>
+  <!-- ══ SLIDE 1: HERO ══════════════════════ -->
+  <div class="slide" id="slide-hero">
+    <div class="hero-inner">
+      <img class="hero-logo"
+        src="https://im-glauben.de/cdn/shop/files/www.im-glauben.de.png?v=1693408582"
+        alt="ImGlauben" />
+      <div class="hero-rule"></div>
+      <div class="hero-eyebrow">Hirtenkonferenz · Exklusives Angebot</div>
+      <div class="hero-num"><em>20&thinsp;%</em></div>
+      <div class="hero-label">auf alles im Shop</div>
+      <div class="hero-sub">im-glauben.de · Jetzt QR-Code scannen</div>
     </div>
-    <div class="overlay-title">Erfolgreich gescannt!</div>
-    <div class="overlay-sub">Viel Freude beim Einkaufen&ensp;✝</div>
-    <div class="overlay-dismiss">Tippen zum Schließen</div>
   </div>
 
-  <script>
-    // ── Config ───────────────────────────────────
-    const QR_TARGET  = "https://timowse.github.io/im-glauben-qr/r.html";
-    const TOPIC      = "imglaube-hk25-x7k9m2p4";
-    const NTFY_SSE   = "https://ntfy.sh/" + TOPIC + "/sse";
+  <!-- ══ SLIDE 2+: Products (generated) ════ -->
+  <div id="product-slides"></div>
 
-    // ── State ────────────────────────────────────
-    let scanTotal   = 0;
-    let overlayTimer = null;
-    let reconnTimer  = null;
+</div><!-- /stage -->
 
-    // ── Elements ─────────────────────────────────
-    const dot        = document.getElementById('statusDot');
-    const statusText = document.getElementById('statusText');
-    const overlay    = document.getElementById('overlay');
-    const qrGlow     = document.getElementById('qrGlow');
-    const countEl    = document.getElementById('scanCount');
+<!-- Scan toast -->
+<div id="toast">
+  <div class="toast-icon">✓</div>
+  <div>
+    <div class="toast-title">Code gescannt!</div>
+    <div class="toast-sub">Weiterleitung zu im-glauben.de</div>
+  </div>
+</div>
 
-    // ── QR render ────────────────────────────────
-    function qrSize() {
-      return Math.floor(Math.min(
-        window.innerHeight * 0.70,
-        window.innerWidth  * 0.44,
-        440
-      ));
+<!-- Progress + dots -->
+<div id="progress"><div id="progress-bar"></div></div>
+<div id="dots"></div>
+
+<script>
+// ── Products ────────────────────────────────────────
+const PRODUCTS = [
+  {"title":"Becher \"geliebt\"","price":"17,50 €","img":"https://cdn.shopify.com/s/files/1/0652/9020/7489/files/geliebt1_SLIM_IMG.jpg?v=1741819996&width=800"},
+  {"title":"Becher \"gesegnet\"","price":"17,50 €","img":"https://cdn.shopify.com/s/files/1/0652/9020/7489/files/gesegnet1_SLIM_IMG.jpg?v=1741820418&width=800"},
+  {"title":"Becher \"Seine Gnade\"","price":"17,50 €","img":"https://cdn.shopify.com/s/files/1/0652/9020/7489/files/seineGnade1_SLIM_IMG.jpg?v=1741819743&width=800"},
+  {"title":"Becher \"Mein Becher fließt über\"","price":"17,50 €","img":"https://cdn.shopify.com/s/files/1/0652/9020/7489/files/meinBecher1_SLIM_IMG.jpg?v=1741815443&width=800"},
+  {"title":"Becher 2er Set","price":"31,90 €","img":"https://cdn.shopify.com/s/files/1/0652/9020/7489/files/gesegnetGeliebt1_set_SLIM.jpg?v=1741657618&width=800"},
+  {"title":"Brettchen \"Mein Hirte\" Eiche","price":"11,90 €","img":"https://cdn.shopify.com/s/files/1/0652/9020/7489/files/meinHirte_LENA-Photoroom.jpg?v=1738544204&width=800"},
+  {"title":"Brettchen \"Seine Gnade\" Eiche","price":"11,90 €","img":"https://cdn.shopify.com/s/files/1/0652/9020/7489/files/SeineGnade_LENA.jpg?v=1738544801&width=800"},
+  {"title":"Buchstütze \"Seine Gnade\"","price":"18,90 €","img":"https://cdn.shopify.com/s/files/1/0652/9020/7489/files/buchhalter_seine_Gnade1_IMG.jpg?v=1758408934&width=800"},
+  {"title":"Trinkflasche \"Blessed\"","price":"19,90 €","img":"https://cdn.shopify.com/s/files/1/0652/9020/7489/files/Edelstahlflasche_Blessed1_IMG_e0f7f2bd-ac35-4da0-b08c-24d444bb0b9f.jpg?v=1757093742&width=800"},
+  {"title":"Trinkflasche \"Frucht des Geistes\"","price":"19,90 €","img":"https://cdn.shopify.com/s/files/1/0652/9020/7489/files/Edelstahlflasche_FruchtDesGeistes1_IMG_34cd1e15-c0dd-429f-b337-f3cb02680a0d.jpg?v=1757093742&width=800"},
+  {"title":"Trinkflasche \"Soli Deo Gloria\"","price":"19,90 €","img":"https://cdn.shopify.com/s/files/1/0652/9020/7489/files/Edelstahlflasche_SoliDeoGloria1_IMG.jpg?v=1757093742&width=800"},
+  {"title":"Kugelschreiber \"Das Wort Christi\"","price":"8,90 €","img":"https://cdn.shopify.com/s/files/1/0652/9020/7489/files/wortChristiWachsen1_KSchreiber.jpg?v=1739235333&width=800"},
+];
+
+// ── Discount calculation ─────────────────────────────
+function salePrice(priceStr) {
+  const n = parseFloat(priceStr.replace(',','.').replace(' €',''));
+  return (n * 0.8).toFixed(2).replace('.',',') + ' €';
+}
+
+// ── Build product slides ──────────────────────────────
+const container = document.getElementById('product-slides');
+const pairs = [];
+for (let i = 0; i < PRODUCTS.length; i += 2) {
+  if (i + 1 < PRODUCTS.length) pairs.push([PRODUCTS[i], PRODUCTS[i+1]]);
+}
+
+pairs.forEach((pair, idx) => {
+  const slide = document.createElement('div');
+  slide.className = 'slide slide-products';
+  slide.id = 'slide-prod-' + idx;
+
+  slide.innerHTML = `
+    <div class="prod-logo-mark">
+      <img src="https://im-glauben.de/cdn/shop/files/www.im-glauben.de.png?v=1693408582" alt="ImGlauben" />
+    </div>
+    ${pair.map(p => `
+      <div class="product-panel">
+        <div class="product-img" style="background-image:url('${p.img}')"></div>
+        <div class="product-info">
+          <div class="product-name">${p.title}</div>
+          <div class="product-prices">
+            <span class="product-price-orig">${p.price}</span>
+            <span class="product-price-sale">${salePrice(p.price)}</span>
+            <span class="product-badge">−20&thinsp;%</span>
+          </div>
+        </div>
+      </div>
+    `).join('')}
+  `;
+  container.appendChild(slide);
+});
+
+// ── Slide sequence ───────────────────────────────────
+// QR(10s) → Hero(6s) → prod, prod, prod(7s each) → repeat
+const SLIDE_IDS   = ['slide-qr', 'slide-hero', ...pairs.map((_,i) => 'slide-prod-'+i)];
+const SLIDE_DUR   = [10000, 6000, ...pairs.map(() => 7500)];
+let currentIdx    = 0;
+let progressTimer = null;
+let progressStart = null;
+
+// Dots
+const dotsEl = document.getElementById('dots');
+SLIDE_IDS.forEach((_,i) => {
+  const d = document.createElement('div');
+  d.className = 'dot' + (i===0 ? ' active' : '');
+  dotsEl.appendChild(d);
+});
+
+function getDot(i) { return dotsEl.children[i]; }
+
+function goToSlide(idx) {
+  const prev = document.getElementById(SLIDE_IDS[currentIdx]);
+  const next = document.getElementById(SLIDE_IDS[idx]);
+  if (prev) { prev.classList.remove('active'); getDot(currentIdx).classList.remove('active'); }
+  currentIdx = idx;
+  next.classList.add('active');
+  getDot(currentIdx).classList.add('active');
+  startProgress(SLIDE_DUR[idx]);
+}
+
+function nextSlide() {
+  goToSlide((currentIdx + 1) % SLIDE_IDS.length);
+}
+
+function startProgress(duration) {
+  clearInterval(progressTimer);
+  const bar = document.getElementById('progress-bar');
+  bar.style.transition = 'none';
+  bar.style.width = '0%';
+  // force reflow
+  void bar.offsetWidth;
+  bar.style.transition = `width ${duration}ms linear`;
+  bar.style.width = '100%';
+  progressTimer = setTimeout(nextSlide, duration);
+}
+
+// Start
+startProgress(SLIDE_DUR[0]);
+
+// ── QR Code ──────────────────────────────────────────
+const QR_TARGET = "https://timowse.github.io/im-glauben-qr/r.html";
+
+function qrSize() {
+  return Math.floor(Math.min(window.innerHeight * .68, window.innerWidth * .42, 420));
+}
+
+function renderQR() {
+  const size = qrSize();
+  if (window._qrReady) { drawQR(size); return; }
+  const s = document.createElement('script');
+  s.src = 'https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js';
+  s.onload = () => { window._qrReady = true; drawQR(size); };
+  s.onerror = () => {
+    const c = document.getElementById('qrCanvas');
+    const img = document.createElement('img');
+    img.src = `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encodeURIComponent(QR_TARGET)}&qzone=1&color=1c1c1c`;
+    img.width = size; img.height = size; img.alt = 'QR Code';
+    c.replaceWith(img);
+  };
+  document.head.appendChild(s);
+}
+
+function drawQR(size) {
+  const el = document.getElementById('qrCanvas');
+  if (!el) return;
+  QRCode.toCanvas(el, QR_TARGET, {
+    width: size, margin: 1,
+    color: { dark: '#1c1c1c', light: '#ffffff' },
+    errorCorrectionLevel: 'H'
+  }, err => {
+    if (err) console.warn('QR error', err);
+  });
+}
+
+// ── ntfy.sh scan listener ────────────────────────────
+const TOPIC   = "imglaube-hk25-x7k9m2p4";
+let reconnTm  = null;
+let toastTm   = null;
+
+function showToast() {
+  const t = document.getElementById('toast');
+  t.classList.add('show');
+  clearTimeout(toastTm);
+  toastTm = setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+function connectSSE() {
+  const es = new EventSource("https://ntfy.sh/" + TOPIC + "/sse");
+  es.onmessage = e => {
+    try {
+      const msg = JSON.parse(e.data);
+      if (msg.event === 'keepalive') return;
+      if (msg.message === 'scanned') showToast();
+    } catch (_) {
+      if (e.data === 'scanned') showToast();
     }
+  };
+  es.onerror = () => {
+    es.close();
+    reconnTm = setTimeout(connectSSE, 5000);
+  };
+}
 
-    function fallback(size) {
-      const canvas = document.getElementById('qrCanvas');
-      const img = document.createElement('img');
-      img.src = "https://api.qrserver.com/v1/create-qr-code/?size=" + size + "x" + size
-              + "&data=" + encodeURIComponent(QR_TARGET) + "&qzone=1&color=1c1c1c&bgcolor=ffffff";
-      img.width = size; img.height = size; img.alt = 'QR Code';
-      canvas.replaceWith(img);
+// ── Init ─────────────────────────────────────────────
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', () => { renderQR(); connectSSE(); });
+} else {
+  renderQR(); connectSSE();
+}
+
+window.addEventListener('orientationchange', () => setTimeout(renderQR, 350));
+
+// Prevent sleep on iPad (wake lock API)
+async function requestWakeLock() {
+  try {
+    if ('wakeLock' in navigator) {
+      await navigator.wakeLock.request('screen');
     }
-
-    function renderQR() {
-      const size = qrSize();
-      if (window._qrReady) {
-        drawQR(size); return;
-      }
-      const s = document.createElement('script');
-      s.src = 'https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js';
-      s.onload  = () => { window._qrReady = true; drawQR(size); };
-      s.onerror = () => fallback(size);
-      document.head.appendChild(s);
-    }
-
-    function drawQR(size) {
-      const el = document.getElementById('qrCanvas') || document.getElementById('qrImg');
-      QRCode.toCanvas(el, QR_TARGET, {
-        width: size, margin: 1,
-        color: { dark: '#1c1c1c', light: '#ffffff' },
-        errorCorrectionLevel: 'H'
-      }, err => { if (err) fallback(size); });
-    }
-
-    // ── Scan animation ────────────────────────────
-    function onScan() {
-      scanTotal++;
-
-      // update counter
-      countEl.textContent = scanTotal === 1
-        ? "1 Scan"
-        : scanTotal + " Scans";
-      countEl.classList.add('visible');
-
-      // burst
-      qrGlow.classList.remove('scanned');
-      void qrGlow.offsetWidth; // reflow to restart animation
-      qrGlow.classList.add('scanned');
-      setTimeout(() => qrGlow.classList.remove('scanned'), 750);
-
-      // overlay
-      overlay.classList.remove('show');
-      void overlay.offsetWidth;
-      overlay.classList.add('show');
-
-      clearTimeout(overlayTimer);
-      overlayTimer = setTimeout(hideOverlay, 4000);
-    }
-
-    function hideOverlay() {
-      overlay.classList.remove('show');
-      clearTimeout(overlayTimer);
-    }
-
-    // ── ntfy.sh SSE listener ──────────────────────
-    function connect() {
-      const es = new EventSource(NTFY_SSE);
-
-      es.onopen = () => {
-        dot.className = 'status-dot ready';
-        statusText.textContent = 'Bereit zum Scannen';
-        clearTimeout(reconnTimer);
-      };
-
-      es.onmessage = (e) => {
-        try {
-          const msg = JSON.parse(e.data);
-          // ntfy sends keepalive events with event:"keepalive" — ignore those
-          if (msg.event === 'keepalive') return;
-          if (msg.message === 'scanned') onScan();
-        } catch (_) {
-          // plain text fallback
-          if (e.data === 'scanned') onScan();
-        }
-      };
-
-      es.onerror = () => {
-        dot.className = 'status-dot waiting';
-        statusText.textContent = 'Verbinde neu…';
-        es.close();
-        // reconnect after 4s
-        reconnTimer = setTimeout(connect, 4000);
-      };
-    }
-
-    // ── Init ─────────────────────────────────────
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', () => { renderQR(); connect(); });
-    } else {
-      renderQR();
-      connect();
-    }
-
-    window.addEventListener('orientationchange', () => setTimeout(renderQR, 300));
-  </script>
+  } catch (_) {}
+}
+requestWakeLock();
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible') requestWakeLock();
+});
+</script>
 
 </body>
 </html>
