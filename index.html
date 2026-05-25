@@ -15,22 +15,19 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:      #ede8e0;
-      --white:   #ffffff;
-      --dark:    #1c1c1c;
-      --mid:     #5a5a5a;
-      --muted:   #999;
-      --border:  #cec9c1;
-      --gold:    #b8975a;
-      --gold-bg: #f5edd8;
-      --gold-glow: rgba(184,151,90,0.45);
+      --bg:       #ede8e0;
+      --white:    #ffffff;
+      --dark:     #1c1c1c;
+      --mid:      #5a5a5a;
+      --muted:    #999;
+      --border:   #cec9c1;
+      --gold:     #b8975a;
+      --gold-bg:  #f5edd8;
+      --green:    #4a9c6d;
+      --green-bg: #e8f5ee;
     }
 
-    html, body {
-      width: 100%; height: 100%;
-      overflow: hidden;
-      background: var(--bg);
-    }
+    html, body { width: 100%; height: 100%; overflow: hidden; background: var(--bg); }
 
     body {
       font-family: 'Nunito', sans-serif;
@@ -45,9 +42,7 @@
         env(safe-area-inset-left, 0px);
     }
 
-    /* ══════════════════════════════
-       LEFT PANEL
-    ══════════════════════════════ */
+    /* ══ LEFT ═══════════════════════════════ */
     .left {
       flex: 0 0 46%;
       display: flex;
@@ -57,12 +52,10 @@
       gap: clamp(10px, 1.8vh, 22px);
     }
 
-    /* Logo image */
     .logo-img {
       display: block;
       width: clamp(160px, 22vw, 320px);
       height: auto;
-      /* PNG has white background — blend it into our warm beige */
       mix-blend-mode: multiply;
     }
 
@@ -73,263 +66,199 @@
       text-transform: uppercase;
     }
 
-    .divider {
-      width: 48px; height: 1.5px;
-      background: var(--border);
-      border-radius: 2px;
-      flex-shrink: 0;
-    }
+    .divider { width: 48px; height: 1.5px; background: var(--border); border-radius: 2px; flex-shrink: 0; }
 
     .discount {
-      font-family: 'Nunito', sans-serif;
       font-size: clamp(44px, 7.5vw, 96px);
       font-weight: 700;
       line-height: 0.95;
     }
-    .discount em {
-      font-style: normal;
-      color: var(--gold);
-    }
-    .discount-sub {
-      font-size: clamp(12px, 1.3vw, 17px);
-      color: var(--mid);
-      font-weight: 500;
-      margin-top: 4px;
-    }
+    .discount em { font-style: normal; color: var(--gold); }
+    .discount-sub { font-size: clamp(12px, 1.3vw, 17px); color: var(--mid); font-weight: 500; margin-top: 4px; }
 
     .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      background: var(--gold-bg);
-      border: 1.5px solid var(--gold);
-      border-radius: 100px;
-      padding: clamp(4px, 0.6vh, 8px) clamp(12px, 1.5vw, 20px);
-      width: fit-content;
+      display: inline-flex; align-items: center; gap: 7px;
+      background: var(--gold-bg); border: 1.5px solid var(--gold); border-radius: 100px;
+      padding: clamp(4px,.6vh,8px) clamp(12px,1.5vw,20px); width: fit-content;
     }
-    .badge .cross-sym { color: var(--gold); font-size: clamp(11px, 1vw, 15px); }
-    .badge span {
-      font-size: clamp(10px, 0.9vw, 13px);
-      font-weight: 700;
-      color: var(--gold);
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-    }
+    .badge .cross-sym { color: var(--gold); font-size: clamp(11px,1vw,15px); }
+    .badge span { font-size: clamp(10px,.9vw,13px); font-weight: 700; color: var(--gold); letter-spacing: .06em; text-transform: uppercase; }
 
     .url-chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      width: fit-content;
-      background: rgba(0,0,0,0.05);
-      border: 1px solid var(--border);
-      border-radius: 100px;
-      padding: clamp(4px, 0.6vh, 8px) clamp(12px, 1.4vw, 18px);
-      font-size: clamp(11px, 1vw, 14px);
-      font-weight: 500;
-      color: var(--mid);
-      text-decoration: none;
+      display: inline-flex; align-items: center; gap: 7px; width: fit-content;
+      background: rgba(0,0,0,.05); border: 1px solid var(--border); border-radius: 100px;
+      padding: clamp(4px,.6vh,8px) clamp(12px,1.4vw,18px);
+      font-size: clamp(11px,1vw,14px); font-weight: 500; color: var(--mid); text-decoration: none;
     }
 
-    .fine {
-      font-size: clamp(10px, 0.8vw, 12px);
-      color: var(--muted);
-      line-height: 1.6;
-    }
+    .fine { font-size: clamp(10px,.8vw,12px); color: var(--muted); line-height: 1.6; }
 
-    /* ══════════════════════════════
-       SEPARATOR
-    ══════════════════════════════ */
-    .sep {
-      width: 1px;
-      background: var(--border);
-      margin: clamp(18px, 3vh, 40px) 0;
-      flex-shrink: 0;
-    }
+    /* ══ SEPARATOR ═══════════════════════════ */
+    .sep { width: 1px; background: var(--border); margin: clamp(18px,3vh,40px) 0; flex-shrink: 0; }
 
-    /* ══════════════════════════════
-       RIGHT PANEL
-    ══════════════════════════════ */
+    /* ══ RIGHT ═══════════════════════════════ */
     .right {
       flex: 1 1 54%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: clamp(20px, 3.5vw, 52px);
-      gap: clamp(10px, 1.8vh, 20px);
-      position: relative;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: clamp(20px,3.5vw,52px);
+      gap: clamp(10px,1.8vh,20px);
     }
 
-    /* ── QR outer glow ring (the pulse) ─── */
+    /* ── QR glow wrap ───────────────────────── */
     .qr-glow {
       position: relative;
       border-radius: 24px;
-      cursor: pointer;
-      -webkit-tap-highlight-color: transparent;
     }
 
-    /* slow breathing glow — always on */
+    /* breathing pulse — always on */
     .qr-glow::before {
       content: '';
-      position: absolute;
-      inset: -10px;
-      border-radius: 30px;
-      background: transparent;
-      box-shadow: 0 0 0 0 var(--gold-glow);
+      position: absolute; inset: -10px; border-radius: 30px;
       animation: breathe 2.8s ease-in-out infinite;
-      pointer-events: none;
-      z-index: 0;
+      pointer-events: none; z-index: 0;
     }
-
     @keyframes breathe {
-      0%   { box-shadow: 0 0  8px  4px rgba(184,151,90,0.10); }
-      50%  { box-shadow: 0 0 32px 14px rgba(184,151,90,0.40); }
-      100% { box-shadow: 0 0  8px  4px rgba(184,151,90,0.10); }
+      0%   { box-shadow: 0 0  8px  4px rgba(184,151,90,.10); }
+      50%  { box-shadow: 0 0 32px 14px rgba(184,151,90,.40); }
+      100% { box-shadow: 0 0  8px  4px rgba(184,151,90,.10); }
     }
 
-    /* ── QR card ─────────────────────────── */
+    /* on scan: gold burst */
+    .qr-glow.scanned::before {
+      animation: burst 0.7s ease-out forwards !important;
+    }
+    @keyframes burst {
+      0%   { box-shadow: 0 0  0px  0px rgba(184,151,90,.85); }
+      40%  { box-shadow: 0 0 55px 30px rgba(184,151,90,.50); }
+      100% { box-shadow: 0 0 80px 50px rgba(184,151,90,.00); }
+    }
+
+    /* ── QR card ───────────────────────────── */
     .qr-frame {
-      background: var(--white);
-      border: 1.5px solid var(--border);
-      border-radius: 20px;
-      padding: clamp(14px, 2.2vw, 30px);
-      box-shadow: 0 6px 32px rgba(0,0,0,0.09);
-      position: relative;
-      z-index: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      background: var(--white); border: 1.5px solid var(--border); border-radius: 20px;
+      padding: clamp(14px,2.2vw,30px);
+      box-shadow: 0 6px 32px rgba(0,0,0,.09);
+      position: relative; z-index: 1;
+      display: flex; align-items: center; justify-content: center;
+      transition: box-shadow 0.3s ease;
     }
-
-    .qr-glow:active .qr-frame {
-      transform: scale(0.97);
+    .qr-glow.scanned .qr-frame {
+      box-shadow: 0 0 0 3px var(--gold), 0 6px 32px rgba(0,0,0,.09);
     }
 
     /* gold corners */
-    .qr-frame::before, .qr-frame::after,
-    .qr-frame .c-bl, .qr-frame .c-tr {
-      content: '';
-      position: absolute;
-      width: 20px; height: 20px;
-      border-color: var(--gold);
-      border-style: solid;
+    .qr-frame::before, .qr-frame::after, .qr-frame .c-bl, .qr-frame .c-tr {
+      content: ''; position: absolute; width: 20px; height: 20px; border-color: var(--gold); border-style: solid;
     }
     .qr-frame::before { top:12px; left:12px;    border-width:2px 0 0 2px; border-radius:3px 0 0 0; }
     .qr-frame::after  { bottom:12px; right:12px; border-width:0 2px 2px 0; border-radius:0 0 3px 0; }
     .qr-frame .c-bl   { bottom:12px; left:12px;  border-width:0 0 2px 2px; border-radius:0 0 0 3px; }
     .qr-frame .c-tr   { top:12px; right:12px;    border-width:2px 2px 0 0; border-radius:0 3px 0 0; }
 
-    #qrCanvas { display:block; border-radius:4px; }
+    #qrCanvas { display: block; border-radius: 4px; }
 
-    /* ── Scan hint ───────────────────────── */
+    /* ── Status dot ────────────────────────── */
+    .status-row {
+      display: flex; align-items: center; gap: 7px;
+      font-size: clamp(10px,.85vw,12px); color: var(--muted);
+      letter-spacing: .05em; text-transform: uppercase;
+    }
+    .status-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--muted);
+      transition: background 0.4s;
+    }
+    .status-dot.ready   { background: #4a9c6d; box-shadow: 0 0 6px rgba(74,156,109,.6); }
+    .status-dot.waiting { background: var(--gold); box-shadow: 0 0 6px rgba(184,151,90,.6); }
+
+    /* ── Scan hint ─────────────────────────── */
     .scan-hint {
-      font-size: clamp(10px, 0.9vw, 13px);
-      color: var(--muted);
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      width: 100%;
-      max-width: 380px;
+      font-size: clamp(10px,.9vw,13px); color: var(--muted);
+      letter-spacing: .08em; text-transform: uppercase;
+      display: flex; align-items: center; gap: 10px;
+      width: 100%; max-width: 380px;
     }
-    .scan-hint::before, .scan-hint::after {
-      content: ''; flex:1; height:1px; background:var(--border);
-    }
+    .scan-hint::before, .scan-hint::after { content:''; flex:1; height:1px; background:var(--border); }
 
-    /* ── Tap hint ────────────────────────── */
-    .tap-hint {
-      font-size: clamp(10px, 0.8vw, 12px);
-      color: var(--muted);
-      opacity: 0.7;
-    }
-
-    /* ══════════════════════════════
-       SUCCESS OVERLAY (on tap)
-    ══════════════════════════════ */
-    .success-overlay {
-      position: fixed;
-      inset: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 16px;
-      background: rgba(237, 232, 224, 0.92);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
+    /* ══ SUCCESS OVERLAY ══════════════════════ */
+    .overlay {
+      position: fixed; inset: 0;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px;
+      background: rgba(237,232,224,.93);
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
       z-index: 100;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .overlay.show { opacity: 1; pointer-events: all; }
+
+    .check-ring {
+      width: clamp(90px,14vw,150px); height: clamp(90px,14vw,150px);
+      border-radius: 50%; border: 3px solid var(--green);
+      display: flex; align-items: center; justify-content: center;
+      transform: scale(0); opacity: 0;
+      transition: none;
+    }
+    .overlay.show .check-ring {
+      animation: pop 0.45s cubic-bezier(.34,1.56,.64,1) 0.05s forwards;
+    }
+    @keyframes pop {
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .check-icon { font-size: clamp(36px,6vw,70px); color: var(--green); line-height: 1; }
+
+    .overlay-title {
+      font-size: clamp(20px,3vw,36px); font-weight: 700; color: var(--dark); letter-spacing: .01em;
       opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.25s ease;
     }
-    .success-overlay.show {
-      opacity: 1;
-      pointer-events: all;
+    .overlay.show .overlay-title {
+      animation: fade-up 0.35s ease 0.3s forwards;
     }
 
-    .success-ring {
-      width: clamp(80px, 14vw, 140px);
-      height: clamp(80px, 14vw, 140px);
-      border-radius: 50%;
-      border: 3px solid var(--gold);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      animation: none;
+    .overlay-sub {
+      font-size: clamp(13px,1.3vw,17px); color: var(--mid);
+      opacity: 0;
     }
-    .success-overlay.show .success-ring {
-      animation: ring-pop 0.4s cubic-bezier(0.34,1.56,0.64,1) forwards;
-    }
-    @keyframes ring-pop {
-      0%   { transform: scale(0.5); opacity: 0; }
-      100% { transform: scale(1);   opacity: 1; }
+    .overlay.show .overlay-sub {
+      animation: fade-up 0.35s ease 0.45s forwards;
     }
 
-    .success-check {
-      font-size: clamp(32px, 6vw, 64px);
-      color: var(--gold);
-      line-height: 1;
+    @keyframes fade-up {
+      from { opacity:0; transform: translateY(8px); }
+      to   { opacity:1; transform: translateY(0); }
     }
 
-    .success-label {
-      font-size: clamp(18px, 2.5vw, 32px);
-      font-weight: 700;
-      color: var(--dark);
-      letter-spacing: 0.02em;
+    .overlay-dismiss {
+      margin-top: 4px;
+      font-size: clamp(11px,.9vw,13px); color: var(--muted);
+      opacity: 0;
+    }
+    .overlay.show .overlay-dismiss {
+      animation: fade-up 0.35s ease 0.6s forwards;
     }
 
-    .success-sub {
-      font-size: clamp(12px, 1.2vw, 16px);
-      color: var(--mid);
+    /* scan counter badge */
+    .scan-count {
+      position: absolute; top: clamp(12px,2vh,20px); right: clamp(12px,2vw,20px);
+      background: var(--gold-bg); border: 1.5px solid var(--gold); border-radius: 100px;
+      padding: 4px 14px;
+      font-size: clamp(11px,.9vw,14px); font-weight: 700; color: var(--gold);
+      letter-spacing: .04em;
+      display: none;
     }
-
-    /* ripple burst on the QR when tapped */
-    @keyframes ripple-out {
-      0%   { box-shadow: 0 0  0px  0px rgba(184,151,90,0.7); }
-      100% { box-shadow: 0 0 60px 40px rgba(184,151,90,0.0); }
-    }
-    .qr-glow.scanned::before {
-      animation: ripple-out 0.6s ease-out forwards !important;
-    }
+    .scan-count.visible { display: block; }
   </style>
 </head>
 <body>
 
-  <!-- ══ LEFT ═══════════════════════════════ -->
+  <!-- ══ LEFT ════════════════════════════════ -->
   <div class="left">
-
-    <img
-      class="logo-img"
+    <img class="logo-img"
       src="https://im-glauben.de/cdn/shop/files/www.im-glauben.de.png?v=1693408582"
-      alt="ImGlauben – Im Glauben"
-      loading="eager"
-    />
+      alt="ImGlauben" loading="eager" />
 
     <div class="tagline">Christliche Geschenk- &amp; Dekoartikel</div>
-
     <div class="divider"></div>
 
     <div>
@@ -353,17 +282,18 @@
     <div class="fine">
       Kein Code nötig – der Rabatt<br/>wird automatisch im Shop angezeigt.
     </div>
-
   </div>
 
   <!-- ══ SEPARATOR ═══════════════════════════ -->
   <div class="sep"></div>
 
-  <!-- ══ RIGHT ══════════════════════════════ -->
+  <!-- ══ RIGHT ═══════════════════════════════ -->
   <div class="right">
 
-    <!-- QR mit Glow + Tap-Handler -->
-    <div class="qr-glow" id="qrGlow" onclick="onScan()">
+    <!-- scan counter -->
+    <div class="scan-count" id="scanCount"></div>
+
+    <div class="qr-glow" id="qrGlow">
       <div class="qr-frame">
         <div class="c-bl"></div>
         <div class="c-tr"></div>
@@ -372,24 +302,43 @@
     </div>
 
     <div class="scan-hint">Jetzt scannen &amp; sparen</div>
-    <div class="tap-hint">Tippe auf den Code wenn jemand scannt</div>
+
+    <div class="status-row">
+      <div class="status-dot" id="statusDot"></div>
+      <span id="statusText">Verbinde…</span>
+    </div>
 
   </div>
 
-  <!-- ══ SUCCESS OVERLAY ═════════════════════ -->
-  <div class="success-overlay" id="overlay" onclick="hideOverlay()">
-    <div class="success-ring">
-      <span class="success-check">✓</span>
+  <!-- ══ SUCCESS OVERLAY ══════════════════════ -->
+  <div class="overlay" id="overlay" onclick="hideOverlay()">
+    <div class="check-ring">
+      <span class="check-icon">✓</span>
     </div>
-    <div class="success-label">Erfolgreich gescannt!</div>
-    <div class="success-sub">Viel Freude beim Einkaufen ✝</div>
+    <div class="overlay-title">Erfolgreich gescannt!</div>
+    <div class="overlay-sub">Viel Freude beim Einkaufen&ensp;✝</div>
+    <div class="overlay-dismiss">Tippen zum Schließen</div>
   </div>
 
   <script>
-    const TARGET = "https://im-glauben.de";
-    let overlayTimer = null;
+    // ── Config ───────────────────────────────────
+    const QR_TARGET  = "https://timowse.github.io/im-glauben-qr/r.html";
+    const TOPIC      = "imglaube-hk25-x7k9m2p4";
+    const NTFY_SSE   = "https://ntfy.sh/" + TOPIC + "/sse";
 
-    /* QR render */
+    // ── State ────────────────────────────────────
+    let scanTotal   = 0;
+    let overlayTimer = null;
+    let reconnTimer  = null;
+
+    // ── Elements ─────────────────────────────────
+    const dot        = document.getElementById('statusDot');
+    const statusText = document.getElementById('statusText');
+    const overlay    = document.getElementById('overlay');
+    const qrGlow     = document.getElementById('qrGlow');
+    const countEl    = document.getElementById('scanCount');
+
+    // ── QR render ────────────────────────────────
     function qrSize() {
       return Math.floor(Math.min(
         window.innerHeight * 0.70,
@@ -401,60 +350,103 @@
     function fallback(size) {
       const canvas = document.getElementById('qrCanvas');
       const img = document.createElement('img');
-      img.src = `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encodeURIComponent(TARGET)}&qzone=1&color=1c1c1c&bgcolor=ffffff`;
+      img.src = "https://api.qrserver.com/v1/create-qr-code/?size=" + size + "x" + size
+              + "&data=" + encodeURIComponent(QR_TARGET) + "&qzone=1&color=1c1c1c&bgcolor=ffffff";
       img.width = size; img.height = size; img.alt = 'QR Code';
       canvas.replaceWith(img);
     }
 
-    function render() {
+    function renderQR() {
       const size = qrSize();
-      if (window._qrLoaded) {
-        QRCode.toCanvas(document.getElementById('qrCanvas'), TARGET,
-          { width: size, margin: 1, color: { dark: '#1c1c1c', light: '#ffffff' }, errorCorrectionLevel: 'H' },
-          err => { if (err) fallback(size); });
-        return;
+      if (window._qrReady) {
+        drawQR(size); return;
       }
       const s = document.createElement('script');
       s.src = 'https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js';
-      s.onload = () => {
-        window._qrLoaded = true;
-        QRCode.toCanvas(document.getElementById('qrCanvas'), TARGET,
-          { width: size, margin: 1, color: { dark: '#1c1c1c', light: '#ffffff' }, errorCorrectionLevel: 'H' },
-          err => { if (err) fallback(size); });
-      };
+      s.onload  = () => { window._qrReady = true; drawQR(size); };
       s.onerror = () => fallback(size);
       document.head.appendChild(s);
     }
 
-    /* Scan feedback */
+    function drawQR(size) {
+      const el = document.getElementById('qrCanvas') || document.getElementById('qrImg');
+      QRCode.toCanvas(el, QR_TARGET, {
+        width: size, margin: 1,
+        color: { dark: '#1c1c1c', light: '#ffffff' },
+        errorCorrectionLevel: 'H'
+      }, err => { if (err) fallback(size); });
+    }
+
+    // ── Scan animation ────────────────────────────
     function onScan() {
-      const glow = document.getElementById('qrGlow');
+      scanTotal++;
 
-      // burst animation on QR
-      glow.classList.add('scanned');
-      setTimeout(() => glow.classList.remove('scanned'), 650);
+      // update counter
+      countEl.textContent = scanTotal === 1
+        ? "1 Scan"
+        : scanTotal + " Scans";
+      countEl.classList.add('visible');
 
-      // show overlay
-      const overlay = document.getElementById('overlay');
+      // burst
+      qrGlow.classList.remove('scanned');
+      void qrGlow.offsetWidth; // reflow to restart animation
+      qrGlow.classList.add('scanned');
+      setTimeout(() => qrGlow.classList.remove('scanned'), 750);
+
+      // overlay
+      overlay.classList.remove('show');
+      void overlay.offsetWidth;
       overlay.classList.add('show');
 
-      // auto-hide after 3s
       clearTimeout(overlayTimer);
-      overlayTimer = setTimeout(hideOverlay, 3000);
+      overlayTimer = setTimeout(hideOverlay, 4000);
     }
 
     function hideOverlay() {
-      document.getElementById('overlay').classList.remove('show');
+      overlay.classList.remove('show');
       clearTimeout(overlayTimer);
     }
 
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', render);
-    } else {
-      render();
+    // ── ntfy.sh SSE listener ──────────────────────
+    function connect() {
+      const es = new EventSource(NTFY_SSE);
+
+      es.onopen = () => {
+        dot.className = 'status-dot ready';
+        statusText.textContent = 'Bereit zum Scannen';
+        clearTimeout(reconnTimer);
+      };
+
+      es.onmessage = (e) => {
+        try {
+          const msg = JSON.parse(e.data);
+          // ntfy sends keepalive events with event:"keepalive" — ignore those
+          if (msg.event === 'keepalive') return;
+          if (msg.message === 'scanned') onScan();
+        } catch (_) {
+          // plain text fallback
+          if (e.data === 'scanned') onScan();
+        }
+      };
+
+      es.onerror = () => {
+        dot.className = 'status-dot waiting';
+        statusText.textContent = 'Verbinde neu…';
+        es.close();
+        // reconnect after 4s
+        reconnTimer = setTimeout(connect, 4000);
+      };
     }
 
-    window.addEventListener('orientationchange', () => setTimeout(render, 300));
+    // ── Init ─────────────────────────────────────
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => { renderQR(); connect(); });
+    } else {
+      renderQR();
+      connect();
+    }
+
+    window.addEventListener('orientationchange', () => setTimeout(renderQR, 300));
   </script>
 
 </body>
