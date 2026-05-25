@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>ImGlauben – Hirtenkonferenz Angebot</title>
+  <link rel="icon" href="https://im-glauben.de/cdn/shop/files/www.im-glauben.de_1.jpg?v=1737767526&width=96" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Nunito:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg-warm:     #ede8e0;
+      --bg-light:    #f7f5f2;
+      --text-dark:   #1c1c1c;
+      --text-mid:    #4a4a4a;
+      --text-light:  #888;
+      --border:      #cecbc5;
+      --white:       #ffffff;
+      --gold:        #b8975a;
+      --gold-light:  #f0e8d6;
+    }
+
+    html, body {
+      height: 100%;
+      width: 100%;
+    }
+
+    body {
+      background-color: var(--bg-warm);
+      font-family: 'Nunito', sans-serif;
+      color: var(--text-dark);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100dvh;
+      padding: 32px 24px;
+    }
+
+    /* ── CARD ─────────────────────────────────── */
+    .card {
+      background: var(--white);
+      border-radius: 20px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.10), 0 2px 8px rgba(0,0,0,0.06);
+      max-width: 520px;
+      width: 100%;
+      padding: 48px 40px 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+    }
+
+    /* ── LOGO ─────────────────────────────────── */
+    .logo-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+
+    .logo-img {
+      width: 90px;
+      height: 90px;
+      object-fit: contain;
+    }
+
+    .logo-name {
+      font-family: 'Instrument Sans', sans-serif;
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: var(--text-dark);
+    }
+
+    .logo-tagline {
+      font-size: 12px;
+      color: var(--text-light);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      font-weight: 400;
+    }
+
+    /* ── DIVIDER ──────────────────────────────── */
+    .divider {
+      width: 100%;
+      height: 1px;
+      background: var(--border);
+      margin-bottom: 28px;
+    }
+
+    /* ── OFFER BADGE ──────────────────────────── */
+    .offer-badge {
+      background: var(--gold-light);
+      border: 1.5px solid var(--gold);
+      border-radius: 100px;
+      padding: 6px 22px;
+      margin-bottom: 24px;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .offer-badge .cross-icon {
+      font-size: 14px;
+      color: var(--gold);
+    }
+
+    .offer-badge span {
+      font-family: 'Instrument Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--gold);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    /* ── HEADLINE ─────────────────────────────── */
+    .headline {
+      font-family: 'Instrument Sans', sans-serif;
+      font-size: 34px;
+      font-weight: 600;
+      color: var(--text-dark);
+      text-align: center;
+      line-height: 1.15;
+      margin-bottom: 6px;
+    }
+
+    .headline em {
+      font-style: normal;
+      color: var(--gold);
+    }
+
+    .subline {
+      font-size: 15px;
+      font-weight: 400;
+      color: var(--text-mid);
+      text-align: center;
+      line-height: 1.5;
+      margin-bottom: 32px;
+    }
+
+    /* ── QR WRAPPER ───────────────────────────── */
+    .qr-wrap {
+      background: var(--bg-light);
+      border: 1.5px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    .qr-wrap canvas,
+    .qr-wrap img {
+      display: block;
+      border-radius: 4px;
+    }
+
+    /* corner decorations */
+    .qr-wrap::before,
+    .qr-wrap::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      border-color: var(--gold);
+      border-style: solid;
+    }
+    .qr-wrap::before {
+      top: 10px;
+      left: 10px;
+      border-width: 2px 0 0 2px;
+      border-radius: 3px 0 0 0;
+    }
+    .qr-wrap::after {
+      bottom: 10px;
+      right: 10px;
+      border-width: 0 2px 2px 0;
+      border-radius: 0 0 3px 0;
+    }
+
+    /* ── SCAN HINT ────────────────────────────── */
+    .scan-hint {
+      font-size: 13px;
+      color: var(--text-light);
+      text-align: center;
+      letter-spacing: 0.03em;
+      margin-bottom: 28px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .scan-hint::before,
+    .scan-hint::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ── URL CHIP ─────────────────────────────── */
+    .url-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg-warm);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 7px 18px;
+      font-family: 'Instrument Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-mid);
+      text-decoration: none;
+      letter-spacing: 0.02em;
+      margin-bottom: 32px;
+      transition: background 0.2s;
+    }
+    .url-chip:hover {
+      background: #e5e0d8;
+    }
+    .url-chip svg {
+      flex-shrink: 0;
+    }
+
+    /* ── EVENT INFO ───────────────────────────── */
+    .event-box {
+      width: 100%;
+      background: var(--bg-warm);
+      border-radius: 12px;
+      padding: 16px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .event-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-light);
+      font-weight: 600;
+    }
+
+    .event-name {
+      font-family: 'Instrument Sans', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-dark);
+    }
+
+    .event-note {
+      font-size: 13px;
+      color: var(--text-mid);
+      margin-top: 2px;
+    }
+
+    /* ── FOOTER ───────────────────────────────── */
+    .footer {
+      margin-top: 24px;
+      font-size: 12px;
+      color: var(--text-light);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+
+    <!-- Logo -->
+    <div class="logo-wrap">
+      <img
+        class="logo-img"
+        src="https://im-glauben.de/cdn/shop/files/www.im-glauben.de_1.jpg?v=1737767526&width=180"
+        alt="ImGlauben Logo"
+      />
+      <div class="logo-name">ImGlauben</div>
+      <div class="logo-tagline">Exklusive christliche Geschenk- &amp; Dekoartikel</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Offer badge -->
+    <div class="offer-badge">
+      <span class="cross-icon">✝</span>
+      <span>Hirtenkonferenz – Sonderangebot</span>
+    </div>
+
+    <!-- Headline -->
+    <div class="headline"><em>20&thinsp;%</em> auf alles</div>
+    <p class="subline">
+      Scanne diesen QR-Code mit deinem Smartphone<br />
+      und spare direkt im Online-Shop.
+    </p>
+
+    <!-- QR Code -->
+    <div class="qr-wrap">
+      <canvas id="qrCanvas"></canvas>
+    </div>
+
+    <div class="scan-hint">Einfach scannen &amp; einkaufen</div>
+
+    <a class="url-chip" href="https://im-glauben.de" target="_blank">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/>
+        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+      </svg>
+      im-glauben.de
+    </a>
+
+    <!-- Event info box -->
+    <div class="event-box">
+      <div class="event-label">Gültigkeitszeitraum</div>
+      <div class="event-name">Während der Hirtenkonferenz</div>
+      <div class="event-note">Der Rabatt wird automatisch im Shop angezeigt. Kein Code notwendig.</div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    © ImGlauben · im-glauben.de
+  </div>
+
+  <!-- QR Code library (no external dependency needed, pure JS) -->
+  <script>
+    // Minimal QR code generator – uses qrcode-generator (CDN)
+    // We load it dynamically so the page still renders without network
+    const QR_URL = "https://im-glauben.de";
+
+    function loadScript(src, cb) {
+      const s = document.createElement('script');
+      s.src = src;
+      s.onload = cb;
+      s.onerror = () => fallbackQR();
+      document.head.appendChild(s);
+    }
+
+    function renderQR(qr) {
+      const canvas = document.getElementById('qrCanvas');
+      const cells = qr.modules;
+      const n = cells.length;
+      const scale = Math.floor(Math.min(window.innerWidth * 0.55, 340) / n);
+      const size = n * scale;
+      canvas.width = size;
+      canvas.height = size;
+      const ctx = canvas.getContext('2d');
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, size, size);
+      ctx.fillStyle = '#1c1c1c';
+      for (let r = 0; r < n; r++) {
+        for (let c = 0; c < n; c++) {
+          if (cells[r][c]) {
+            ctx.fillRect(c * scale, r * scale, scale, scale);
+          }
+        }
+      }
+    }
+
+    function fallbackQR() {
+      // Replace canvas with an img using a public QR API
+      const canvas = document.getElementById('qrCanvas');
+      const size = Math.min(Math.floor(window.innerWidth * 0.55), 340);
+      const img = document.createElement('img');
+      img.src = `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encodeURIComponent(QR_URL)}&qzone=1&color=1c1c1c`;
+      img.width = size;
+      img.height = size;
+      img.alt = 'QR Code';
+      canvas.replaceWith(img);
+    }
+
+    // Try qrcode.js from cdnjs
+    loadScript('https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js', () => {
+      // qrcodejs works differently — use its internal approach
+      // Fall through to our own implementation
+      loadScript('https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js', () => {
+        const size = Math.min(Math.floor(window.innerWidth * 0.55), 340);
+        QRCode.toCanvas(document.getElementById('qrCanvas'), QR_URL, {
+          width: size,
+          margin: 1,
+          color: { dark: '#1c1c1c', light: '#ffffff' },
+          errorCorrectionLevel: 'H'
+        }, (err) => {
+          if (err) fallbackQR();
+        });
+      });
+    });
+  </script>
+
+</body>
+</html>
