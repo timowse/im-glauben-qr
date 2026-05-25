@@ -7,11 +7,9 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <title>ImGlauben – Hirtenkonferenz</title>
   <link rel="icon" href="https://im-glauben.de/cdn/shop/files/www.im-glauben.de_1.jpg?v=1737767526" />
-  <link rel="apple-touch-icon" href="https://im-glauben.de/cdn/shop/files/www.im-glauben.de_1.jpg?v=1737767526" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <!-- Cormorant matches the original's Didot-style Roman serif very closely -->
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant:wght@400;500;600&family=Nunito:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -25,6 +23,7 @@
       --border:  #cec9c1;
       --gold:    #b8975a;
       --gold-bg: #f5edd8;
+      --gold-glow: rgba(184,151,90,0.45);
     }
 
     html, body {
@@ -46,63 +45,34 @@
         env(safe-area-inset-left, 0px);
     }
 
-    /* ══════════════════════════════════════
+    /* ══════════════════════════════
        LEFT PANEL
-    ══════════════════════════════════════ */
+    ══════════════════════════════ */
     .left {
       flex: 0 0 46%;
       display: flex;
       flex-direction: column;
       justify-content: center;
-      padding: clamp(20px, 3.5vw, 52px) clamp(20px, 3.5vw, 52px);
+      padding: clamp(20px, 3.5vw, 52px);
       gap: clamp(10px, 1.8vh, 22px);
     }
 
-    /* ── Wordmark ─────────────────────────── */
-    .wordmark {
-      display: flex;
-      align-items: center;          /* vertically center all pieces */
-      /* Cross SVG overflows top/bottom – give it room */
-      padding-top: clamp(10px, 2.5vh, 32px);
-      padding-bottom: clamp(4px, 1vh, 14px);
+    /* Logo image */
+    .logo-img {
+      display: block;
+      width: clamp(160px, 22vw, 320px);
+      height: auto;
+      /* PNG has white background — blend it into our warm beige */
+      mix-blend-mode: multiply;
     }
 
-    .wm-text {
-      font-family: 'Cormorant', serif;
-      font-weight: 400;
-      font-size: clamp(40px, 7vw, 96px);
-      line-height: 1;
-      color: var(--dark);
-      letter-spacing: 0.02em;
-      /* prevent font from clipping descenders */
-      display: inline-block;
-    }
-
-    .wm-cross {
-      /* The SVG cross – sized relative to the font */
-      display: inline-block;
-      width:  clamp(28px, 4.2vw, 58px);
-      /* Height: cross should be ~2× the cap height */
-      height: clamp(72px, 12vh, 160px);
-      flex-shrink: 0;
-      /* Nudge the cross so its crossbar aligns with letter cap-height */
-      margin-top: clamp(-22px, -3.5vh, -48px);
-      margin-left: clamp(-2px, -0.2vw, -4px);
-      margin-right: clamp(-2px, -0.2vw, -4px);
-      /* keep it visually on-center with the letters */
-      align-self: flex-start;
-    }
-
-    /* ── Tagline below wordmark ───────────── */
     .tagline {
       font-size: clamp(10px, 1vw, 14px);
       color: var(--muted);
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      font-weight: 400;
     }
 
-    /* ── Divider ──────────────────────────── */
     .divider {
       width: 48px; height: 1.5px;
       background: var(--border);
@@ -110,13 +80,11 @@
       flex-shrink: 0;
     }
 
-    /* ── Offer ────────────────────────────── */
     .discount {
-      font-family: 'Cormorant', serif;
-      font-size: clamp(42px, 7.5vw, 100px);
-      font-weight: 500;
+      font-family: 'Nunito', sans-serif;
+      font-size: clamp(44px, 7.5vw, 96px);
+      font-weight: 700;
       line-height: 0.95;
-      color: var(--dark);
     }
     .discount em {
       font-style: normal;
@@ -126,10 +94,9 @@
       font-size: clamp(12px, 1.3vw, 17px);
       color: var(--mid);
       font-weight: 500;
-      margin-top: 2px;
+      margin-top: 4px;
     }
 
-    /* ── Event badge ──────────────────────── */
     .badge {
       display: inline-flex;
       align-items: center;
@@ -142,7 +109,6 @@
     }
     .badge .cross-sym { color: var(--gold); font-size: clamp(11px, 1vw, 15px); }
     .badge span {
-      font-family: 'Nunito', sans-serif;
       font-size: clamp(10px, 0.9vw, 13px);
       font-weight: 700;
       color: var(--gold);
@@ -150,7 +116,6 @@
       text-transform: uppercase;
     }
 
-    /* ── URL chip ─────────────────────────── */
     .url-chip {
       display: inline-flex;
       align-items: center;
@@ -166,16 +131,15 @@
       text-decoration: none;
     }
 
-    /* ── Fine print ───────────────────────── */
     .fine {
       font-size: clamp(10px, 0.8vw, 12px);
       color: var(--muted);
       line-height: 1.6;
     }
 
-    /* ══════════════════════════════════════
+    /* ══════════════════════════════
        SEPARATOR
-    ══════════════════════════════════════ */
+    ══════════════════════════════ */
     .sep {
       width: 1px;
       background: var(--border);
@@ -183,9 +147,9 @@
       flex-shrink: 0;
     }
 
-    /* ══════════════════════════════════════
+    /* ══════════════════════════════
        RIGHT PANEL
-    ══════════════════════════════════════ */
+    ══════════════════════════════ */
     .right {
       flex: 1 1 54%;
       display: flex;
@@ -194,9 +158,37 @@
       justify-content: center;
       padding: clamp(20px, 3.5vw, 52px);
       gap: clamp(10px, 1.8vh, 20px);
+      position: relative;
     }
 
-    /* ── QR frame ─────────────────────────── */
+    /* ── QR outer glow ring (the pulse) ─── */
+    .qr-glow {
+      position: relative;
+      border-radius: 24px;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* slow breathing glow — always on */
+    .qr-glow::before {
+      content: '';
+      position: absolute;
+      inset: -10px;
+      border-radius: 30px;
+      background: transparent;
+      box-shadow: 0 0 0 0 var(--gold-glow);
+      animation: breathe 2.8s ease-in-out infinite;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    @keyframes breathe {
+      0%   { box-shadow: 0 0  8px  4px rgba(184,151,90,0.10); }
+      50%  { box-shadow: 0 0 32px 14px rgba(184,151,90,0.40); }
+      100% { box-shadow: 0 0  8px  4px rgba(184,151,90,0.10); }
+    }
+
+    /* ── QR card ─────────────────────────── */
     .qr-frame {
       background: var(--white);
       border: 1.5px solid var(--border);
@@ -204,9 +196,15 @@
       padding: clamp(14px, 2.2vw, 30px);
       box-shadow: 0 6px 32px rgba(0,0,0,0.09);
       position: relative;
+      z-index: 1;
       display: flex;
       align-items: center;
       justify-content: center;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .qr-glow:active .qr-frame {
+      transform: scale(0.97);
     }
 
     /* gold corners */
@@ -218,14 +216,14 @@
       border-color: var(--gold);
       border-style: solid;
     }
-    .qr-frame::before { top:12px; left:12px;   border-width:2px 0 0 2px; border-radius:3px 0 0 0; }
+    .qr-frame::before { top:12px; left:12px;    border-width:2px 0 0 2px; border-radius:3px 0 0 0; }
     .qr-frame::after  { bottom:12px; right:12px; border-width:0 2px 2px 0; border-radius:0 0 3px 0; }
     .qr-frame .c-bl   { bottom:12px; left:12px;  border-width:0 0 2px 2px; border-radius:0 0 0 3px; }
-    .qr-frame .c-tr   { top:12px; right:12px;   border-width:2px 2px 0 0; border-radius:0 3px 0 0; }
+    .qr-frame .c-tr   { top:12px; right:12px;    border-width:2px 2px 0 0; border-radius:0 3px 0 0; }
 
     #qrCanvas { display:block; border-radius:4px; }
 
-    /* ── Scan hint ────────────────────────── */
+    /* ── Scan hint ───────────────────────── */
     .scan-hint {
       font-size: clamp(10px, 0.9vw, 13px);
       color: var(--muted);
@@ -240,33 +238,95 @@
     .scan-hint::before, .scan-hint::after {
       content: ''; flex:1; height:1px; background:var(--border);
     }
+
+    /* ── Tap hint ────────────────────────── */
+    .tap-hint {
+      font-size: clamp(10px, 0.8vw, 12px);
+      color: var(--muted);
+      opacity: 0.7;
+    }
+
+    /* ══════════════════════════════
+       SUCCESS OVERLAY (on tap)
+    ══════════════════════════════ */
+    .success-overlay {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      background: rgba(237, 232, 224, 0.92);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 100;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+    .success-overlay.show {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .success-ring {
+      width: clamp(80px, 14vw, 140px);
+      height: clamp(80px, 14vw, 140px);
+      border-radius: 50%;
+      border: 3px solid var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: none;
+    }
+    .success-overlay.show .success-ring {
+      animation: ring-pop 0.4s cubic-bezier(0.34,1.56,0.64,1) forwards;
+    }
+    @keyframes ring-pop {
+      0%   { transform: scale(0.5); opacity: 0; }
+      100% { transform: scale(1);   opacity: 1; }
+    }
+
+    .success-check {
+      font-size: clamp(32px, 6vw, 64px);
+      color: var(--gold);
+      line-height: 1;
+    }
+
+    .success-label {
+      font-size: clamp(18px, 2.5vw, 32px);
+      font-weight: 700;
+      color: var(--dark);
+      letter-spacing: 0.02em;
+    }
+
+    .success-sub {
+      font-size: clamp(12px, 1.2vw, 16px);
+      color: var(--mid);
+    }
+
+    /* ripple burst on the QR when tapped */
+    @keyframes ripple-out {
+      0%   { box-shadow: 0 0  0px  0px rgba(184,151,90,0.7); }
+      100% { box-shadow: 0 0 60px 40px rgba(184,151,90,0.0); }
+    }
+    .qr-glow.scanned::before {
+      animation: ripple-out 0.6s ease-out forwards !important;
+    }
   </style>
 </head>
 <body>
 
-  <!-- ══ LEFT ═══════════════════════════════════ -->
+  <!-- ══ LEFT ═══════════════════════════════ -->
   <div class="left">
 
-    <!-- Full wordmark: IM [cross] GLAUBEN -->
-    <div class="wordmark">
-      <span class="wm-text">IM</span>
-
-      <!-- Hand-drawn cross SVG matching original style -->
-      <svg class="wm-cross" viewBox="0 0 56 150" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <filter id="rough" x="-20%" y="-20%" width="140%" height="140%">
-            <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="4" seed="3" result="noise"/>
-            <feDisplacementMap in="SourceGraphic" in2="noise" scale="2.2" xChannelSelector="R" yChannelSelector="G"/>
-          </filter>
-        </defs>
-        <!-- vertical stroke – full height of viewBox -->
-        <rect x="22" y="0" width="12" height="150" rx="4" fill="#1c1c1c" filter="url(#rough)"/>
-        <!-- horizontal crossbar – sits at ~38% from top (matching original) -->
-        <rect x="0" y="48" width="56" height="11" rx="4" fill="#1c1c1c" filter="url(#rough)"/>
-      </svg>
-
-      <span class="wm-text">GLAUBEN</span>
-    </div>
+    <img
+      class="logo-img"
+      src="https://im-glauben.de/cdn/shop/files/www.im-glauben.de.png?v=1693408582"
+      alt="ImGlauben – Im Glauben"
+      loading="eager"
+    />
 
     <div class="tagline">Christliche Geschenk- &amp; Dekoartikel</div>
 
@@ -296,25 +356,40 @@
 
   </div>
 
-  <!-- ══ SEPARATOR ══════════════════════════════ -->
+  <!-- ══ SEPARATOR ═══════════════════════════ -->
   <div class="sep"></div>
 
-  <!-- ══ RIGHT ══════════════════════════════════ -->
+  <!-- ══ RIGHT ══════════════════════════════ -->
   <div class="right">
 
-    <div class="qr-frame">
-      <div class="c-bl"></div>
-      <div class="c-tr"></div>
-      <canvas id="qrCanvas"></canvas>
+    <!-- QR mit Glow + Tap-Handler -->
+    <div class="qr-glow" id="qrGlow" onclick="onScan()">
+      <div class="qr-frame">
+        <div class="c-bl"></div>
+        <div class="c-tr"></div>
+        <canvas id="qrCanvas"></canvas>
+      </div>
     </div>
 
     <div class="scan-hint">Jetzt scannen &amp; sparen</div>
+    <div class="tap-hint">Tippe auf den Code wenn jemand scannt</div>
 
+  </div>
+
+  <!-- ══ SUCCESS OVERLAY ═════════════════════ -->
+  <div class="success-overlay" id="overlay" onclick="hideOverlay()">
+    <div class="success-ring">
+      <span class="success-check">✓</span>
+    </div>
+    <div class="success-label">Erfolgreich gescannt!</div>
+    <div class="success-sub">Viel Freude beim Einkaufen ✝</div>
   </div>
 
   <script>
     const TARGET = "https://im-glauben.de";
+    let overlayTimer = null;
 
+    /* QR render */
     function qrSize() {
       return Math.floor(Math.min(
         window.innerHeight * 0.70,
@@ -327,24 +402,50 @@
       const canvas = document.getElementById('qrCanvas');
       const img = document.createElement('img');
       img.src = `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encodeURIComponent(TARGET)}&qzone=1&color=1c1c1c&bgcolor=ffffff`;
-      img.width = size; img.height = size;
-      img.alt = 'QR Code';
+      img.width = size; img.height = size; img.alt = 'QR Code';
       canvas.replaceWith(img);
     }
 
     function render() {
       const size = qrSize();
+      if (window._qrLoaded) {
+        QRCode.toCanvas(document.getElementById('qrCanvas'), TARGET,
+          { width: size, margin: 1, color: { dark: '#1c1c1c', light: '#ffffff' }, errorCorrectionLevel: 'H' },
+          err => { if (err) fallback(size); });
+        return;
+      }
       const s = document.createElement('script');
       s.src = 'https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js';
       s.onload = () => {
-        QRCode.toCanvas(document.getElementById('qrCanvas'), TARGET, {
-          width: size, margin: 1,
-          color: { dark: '#1c1c1c', light: '#ffffff' },
-          errorCorrectionLevel: 'H'
-        }, err => { if (err) fallback(size); });
+        window._qrLoaded = true;
+        QRCode.toCanvas(document.getElementById('qrCanvas'), TARGET,
+          { width: size, margin: 1, color: { dark: '#1c1c1c', light: '#ffffff' }, errorCorrectionLevel: 'H' },
+          err => { if (err) fallback(size); });
       };
       s.onerror = () => fallback(size);
       document.head.appendChild(s);
+    }
+
+    /* Scan feedback */
+    function onScan() {
+      const glow = document.getElementById('qrGlow');
+
+      // burst animation on QR
+      glow.classList.add('scanned');
+      setTimeout(() => glow.classList.remove('scanned'), 650);
+
+      // show overlay
+      const overlay = document.getElementById('overlay');
+      overlay.classList.add('show');
+
+      // auto-hide after 3s
+      clearTimeout(overlayTimer);
+      overlayTimer = setTimeout(hideOverlay, 3000);
+    }
+
+    function hideOverlay() {
+      document.getElementById('overlay').classList.remove('show');
+      clearTimeout(overlayTimer);
     }
 
     if (document.readyState === 'loading') {
