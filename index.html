@@ -45,8 +45,11 @@
     /* ══ SLIDE SYSTEM ══════════════════════════ */
     #stage {
       position: fixed; inset: 0;
-      /* No safe-area padding – content fills edge to edge incl. behind status bar & home indicator */
       cursor: pointer;
+      /* Kein Text-Select, kein Long-Press-Menü auf iOS */
+      -webkit-user-select: none;
+      user-select: none;
+      -webkit-touch-callout: none;
     }
     .slide {
       position: absolute; inset: 0;
@@ -151,7 +154,6 @@
       background: rgba(0,0,0,.04); border: 1px solid var(--border); border-radius: 100px;
       padding: clamp(5px,.6vh,8px) clamp(14px,1.5vw,20px);
       font-size: clamp(12px,1.05vw,15px); color: var(--mid);
-      text-decoration: none;
     }
 
     .info-note {
@@ -411,13 +413,13 @@
         <span>Sonderrabatt</span>
       </div>
 
-      <a class="info-url" href="https://im-glauben.de" target="_blank">
+      <span class="info-url">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/>
           <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
         </svg>
         im-glauben.de
-      </a>
+      </span>
 
       <div class="info-note">Kein Code nötig – Rabatt wird<br/>automatisch im Shop angezeigt.</div>
     </div>
@@ -464,14 +466,14 @@
         <div class="info-sub">Inspirierende Inhalte<br/>und neue Produkte</div>
       </div>
 
-      <a class="info-url" href="https://www.instagram.com/imglauben" target="_blank">
+      <span class="info-url">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
           <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
           <circle cx="12" cy="12" r="4"/>
           <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
         </svg>
         instagram.com/imglauben
-      </a>
+      </span>
 
       <div class="info-note">Jetzt folgen &amp; keine Neuheiten<br/>und Aktionen verpassen.</div>
     </div>
