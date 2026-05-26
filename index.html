@@ -783,6 +783,12 @@ if (document.readyState === 'loading') {
 
 window.addEventListener('orientationchange', () => setTimeout(renderQR, 350));
 
+// ── Tap to advance ───────────────────────────────────
+document.getElementById('stage').addEventListener('click', () => {
+  clearTimeout(progressTimer);
+  nextSlide();
+});
+
 // Prevent sleep on iPad (wake lock API)
 async function requestWakeLock() {
   try {
