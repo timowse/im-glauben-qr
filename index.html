@@ -14,7 +14,7 @@
   <link rel="apple-touch-icon" href="https://im-glauben.de/cdn/shop/files/www.im-glauben.de_1.jpg?v=1737767526&width=180" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Nunito:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
 
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -27,10 +27,7 @@
       --muted:   #9a9690;
       --border:  #d4cfc8;
       --gold:    #b8975a;
-      --gold-bg: #f5edd8;
-      --insta1:  #833ab4;
-      --insta2:  #fd1d1d;
-      --insta3:  #fcb045;
+      --gold-bg: #f0e9d6;
     }
 
     html, body {
@@ -42,112 +39,110 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* ══ SLIDE SYSTEM ══════════════════════════ */
+    /* ══ STAGE ══════════════════════════════════ */
     #stage {
       position: fixed; inset: 0;
       cursor: pointer;
-      /* Kein Text-Select, kein Long-Press-Menü auf iOS */
-      -webkit-user-select: none;
-      user-select: none;
+      -webkit-user-select: none; user-select: none;
       -webkit-touch-callout: none;
     }
+
+    /* ══ SLIDES ════════════════════════════════ */
     .slide {
       position: absolute; inset: 0;
-      opacity: 0; transition: opacity .8s ease;
+      opacity: 0;
+      transform: scale(.985);
+      transition: opacity .9s cubic-bezier(.4,0,.2,1),
+                  transform .9s cubic-bezier(.4,0,.2,1);
       pointer-events: none;
     }
-    .slide.active { opacity: 1; pointer-events: all; }
+    .slide.active {
+      opacity: 1;
+      transform: scale(1);
+      pointer-events: all;
+    }
 
-    /* progress bar */
+    /* ══ PROGRESS BAR ═══════════════════════════ */
     #progress {
       position: fixed; bottom: 0; left: 0; right: 0;
-      height: 2px; background: rgba(255,255,255,.08); z-index: 99;
+      height: 3px; background: rgba(255,255,255,.08); z-index: 99;
     }
     #progress-bar {
       height: 100%; background: var(--gold); width: 0%; transition: none;
     }
 
-    /* dots */
+    /* ══ DOTS ═══════════════════════════════════ */
     #dots {
-      position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%);
-      display: flex; gap: 7px; z-index: 98;
+      position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 9px; z-index: 98;
     }
     .dot {
-      width: 5px; height: 5px; border-radius: 50%;
-      background: rgba(255,255,255,.22); transition: background .3s, transform .3s;
+      width: 7px; height: 7px; border-radius: 50%;
+      background: rgba(255,255,255,.22);
+      transition: background .3s, transform .3s;
     }
-    .dot.active { background: var(--gold); transform: scale(1.5); }
+    .dot.active { background: var(--gold); transform: scale(1.4); }
+    /* Dark dots on light (info) slides */
+    #stage[data-light] .dot { background: rgba(28,28,28,.18); }
+    #stage[data-light] .dot.active { background: var(--gold); transform: scale(1.4); }
 
-    /* ══ QR / INFO SLIDE ═══════════════════════ */
-    .slide-info {
-      background: var(--bg);
-      display: flex;
-      overflow: hidden;
-    }
+    /* ══ INFO SLIDES (QR + Instagram) ══════════ */
+    .slide-info { background: var(--bg); display: flex; overflow: hidden; }
 
     .info-left {
       flex: 0 0 48%;
       display: flex; flex-direction: column; justify-content: center;
       padding: clamp(36px,5vw,80px);
-      gap: clamp(16px,2.4vh,32px);
+      gap: clamp(14px,2.2vh,30px);
       overflow: hidden;
     }
 
     .logo-img {
       display: block;
-      width: clamp(140px,21vw,260px);
-      height: auto;
+      width: clamp(140px,21vw,260px); height: auto;
       mix-blend-mode: multiply;
       flex-shrink: 0;
     }
 
     .info-tagline {
-      font-size: clamp(10px,.9vw,13px);
-      color: var(--muted);
-      letter-spacing: .14em;
-      text-transform: uppercase;
-      flex-shrink: 0;
+      font-size: clamp(10px,.9vw,13px); color: var(--muted);
+      letter-spacing: .12em; text-transform: uppercase;
+      flex-shrink: 1;
     }
 
-    .info-rule { width: 36px; height: 1px; background: var(--border); flex-shrink: 0; }
-
-    /* Big number block */
-    .info-offer {
-      flex-shrink: 0;
-      overflow: visible;
+    .info-rule {
+      width: 40px; height: 1px; flex-shrink: 0;
+      background: linear-gradient(to right, var(--gold), transparent);
     }
+
+    .info-offer { flex-shrink: 0; overflow: visible; }
     .info-num {
-      font-size: clamp(60px,11vw,140px);
-      font-weight: 600;
-      line-height: .88;
-      letter-spacing: -.025em;
-      color: var(--dark);
+      font-size: clamp(60px,11vw,140px); font-weight: 600;
+      line-height: .88; letter-spacing: -.025em; color: var(--dark);
     }
     .info-num em { font-style: normal; color: var(--gold); }
     .info-sub {
-      font-size: clamp(13px,1.4vw,19px);
-      font-weight: 400;
-      color: var(--mid);
-      margin-top: clamp(6px,.8vh,12px);
-      line-height: 1.4;
+      font-size: clamp(13px,1.4vw,19px); font-weight: 400;
+      color: var(--mid); margin-top: clamp(6px,.8vh,12px); line-height: 1.4;
     }
 
-    /* pill badge */
     .info-pill {
       display: inline-flex; align-items: center; gap: 10px;
       width: fit-content; flex-shrink: 0;
-      border: 1px solid rgba(184,151,90,.5);
-      border-radius: 100px;
+      border: 1px solid rgba(184,151,90,.5); border-radius: 100px;
       background: var(--gold-bg);
       padding: clamp(7px,.9vh,11px) clamp(16px,1.8vw,26px);
     }
     .info-pill-line { width: 1px; height: 14px; background: rgba(184,151,90,.4); }
-    .info-pill span {
+    .info-pill .pill-main {
       font-size: clamp(10px,.85vw,13px); font-weight: 600;
       color: var(--gold); letter-spacing: .08em; text-transform: uppercase;
     }
+    .info-pill .pill-sub {
+      font-size: clamp(10px,.85vw,13px); font-weight: 400;
+      color: rgba(184,151,90,.7); letter-spacing: .08em; text-transform: uppercase;
+    }
 
-    /* url chip */
     .info-url {
       display: inline-flex; align-items: center; gap: 8px;
       width: fit-content; flex-shrink: 0;
@@ -157,61 +152,44 @@
     }
 
     .info-note {
-      font-size: clamp(10px,.85vw,12px);
-      color: var(--muted); line-height: 1.75;
-      flex-shrink: 0;
+      font-size: clamp(10px,.85vw,12px); color: var(--muted);
+      line-height: 1.75; flex-shrink: 1;
     }
 
-    /* separator */
     .info-sep { width: 1px; background: var(--border); margin: clamp(28px,4vh,60px) 0; flex-shrink: 0; }
 
-    /* QR panel */
     .info-right {
-      flex: 1;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      padding: clamp(28px,4vw,60px);
-      gap: clamp(16px,2.4vh,28px);
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: clamp(28px,4vw,60px); gap: clamp(16px,2.4vh,28px);
       overflow: hidden;
     }
 
+    /* QR glow – compositor-friendly (opacity + transform only) */
     .qr-wrap { position: relative; flex-shrink: 0; }
     .qr-wrap::before {
       content: '';
-      position: absolute; inset: -16px; border-radius: 32px;
-      animation: glow 3.5s ease-in-out infinite;
+      position: absolute; inset: -20px; border-radius: 36px;
+      background: rgba(184,151,90,.28);
+      filter: blur(22px);
+      animation: qr-glow 3.5s ease-in-out infinite;
     }
-    @keyframes glow {
-      0%,100% { box-shadow: 0 0 0 0 rgba(184,151,90,0); }
-      50%      { box-shadow: 0 0 40px 12px rgba(184,151,90,.18); }
-    }
-    .qr-wrap.insta::before { animation: glow-insta 3.5s ease-in-out infinite; }
-    @keyframes glow-insta {
-      0%,100% { box-shadow: 0 0 0 0 rgba(131,58,180,0); }
-      50%      { box-shadow: 0 0 40px 12px rgba(131,58,180,.18); }
+    @keyframes qr-glow {
+      0%,100% { opacity: 0; transform: scale(.85); }
+      50%      { opacity: 1; transform: scale(1); }
     }
 
     .qr-box {
-      background: var(--white);
-      border: 1px solid var(--border);
-      border-radius: 24px;
+      background: var(--white); border: 1px solid var(--border); border-radius: 24px;
       padding: clamp(18px,2.4vw,36px);
       box-shadow: 0 12px 56px rgba(0,0,0,.10);
       position: relative; z-index: 1;
       display: flex; align-items: center; justify-content: center;
     }
-
-    /* corner marks */
     .qr-box::before, .qr-box::after, .qr-box .cm-bl, .qr-box .cm-tr {
-      content: ''; position: absolute; width: 22px; height: 22px; border-style: solid;
+      content: ''; position: absolute; width: 22px; height: 22px;
+      border-style: solid; border-color: var(--gold);
     }
-    .qr-box.gold-corners::before,
-    .qr-box.gold-corners::after,
-    .qr-box.gold-corners .cm-bl,
-    .qr-box.gold-corners .cm-tr { border-color: var(--gold); }
-    .qr-box.insta-corners::before,
-    .qr-box.insta-corners::after,
-    .qr-box.insta-corners .cm-bl,
-    .qr-box.insta-corners .cm-tr { border-color: var(--insta1); }
     .qr-box::before { top:12px; left:12px;    border-width:2.5px 0 0 2.5px; border-radius:4px 0 0 0; }
     .qr-box::after  { bottom:12px; right:12px; border-width:0 2.5px 2.5px 0; border-radius:0 0 4px 0; }
     .qr-box .cm-bl  { bottom:12px; left:12px;  border-width:0 0 2.5px 2.5px; border-radius:0 0 0 4px; }
@@ -221,39 +199,29 @@
       font-size: clamp(10px,.85vw,12px); color: var(--muted);
       letter-spacing: .12em; text-transform: uppercase;
       display: flex; align-items: center; gap: 14px;
-      width: 100%; max-width: 380px;
+      width: 100%; max-width: min(380px,80%);
       flex-shrink: 0;
     }
     .qr-label::before, .qr-label::after { content:''; flex:1; height:1px; background:var(--border); }
 
-    /* ── Instagram extras ─── */
+    /* Instagram handle – warm amber gradient (brand-consistent) */
     .insta-handle {
-      font-size: clamp(36px,6vw,82px);
-      font-weight: 600; line-height: 1.1;
-      letter-spacing: -.01em;
-      /* gradient text */
-      background: linear-gradient(135deg, var(--insta1) 0%, var(--insta2) 55%, var(--insta3) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      display: inline-block;
+      font-size: clamp(36px,6vw,82px); font-weight: 600;
+      line-height: 1.1; letter-spacing: -.01em;
+      background: linear-gradient(135deg, #c96b2a 0%, #e8954a 55%, #f0c060 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
       background-clip: text;
-      padding-bottom: .08em; /* prevent descender clipping */
+      padding-bottom: .15em; margin-bottom: -.15em;
     }
 
     /* ══ HERO SLIDE ════════════════════════════ */
-    #slide-hero {
-      background: var(--dark);
-      display: flex; align-items: center; justify-content: center;
-    }
+    #slide-hero { background: var(--dark); display: flex; align-items: center; justify-content: center; }
     .hero-inner {
       display: flex; flex-direction: column; align-items: center;
-      gap: clamp(14px,2.2vh,28px);
-      padding: clamp(32px,5vw,72px);
-      text-align: center;
+      gap: clamp(14px,2.2vh,28px); padding: clamp(32px,5vw,72px); text-align: center;
     }
-    .hero-logo {
-      width: clamp(110px,14vw,200px); height: auto;
-      filter: invert(1); opacity: .88; flex-shrink: 0;
-    }
+    .hero-logo { width: clamp(110px,14vw,200px); height: auto; filter: invert(1); opacity: .88; flex-shrink: 0; }
     .hero-rule { width: 36px; height: 1px; background: rgba(255,255,255,.18); flex-shrink: 0; }
     .hero-eyebrow {
       font-size: clamp(11px,.95vw,14px); font-weight: 500;
@@ -269,104 +237,93 @@
       color: rgba(255,255,255,.7); letter-spacing: .01em;
     }
     .hero-url {
-      font-family: 'Nunito', sans-serif;
       font-size: clamp(13px,1.2vw,17px); font-weight: 300;
-      color: rgba(255,255,255,.32); letter-spacing: .08em;
-      text-transform: uppercase;
+      color: rgba(255,255,255,.32); letter-spacing: .08em; text-transform: uppercase;
     }
 
-    /* ══ BANNER SLIDES ═════════════════════════ */
-    .slide-banner {
-      display: block;
-    }
+    /* ══ BANNER SLIDES ══════════════════════════ */
+    .slide-banner { display: block; }
+
+    /* Ken Burns only when active */
     .banner-img {
       position: absolute; inset: 0;
-      background-size: cover;
-      background-position: center;
-      animation: kb 16s ease-in-out infinite alternate;
+      background-size: cover; background-position: center;
+      transform: scale(1);
+    }
+    .slide.active .banner-img {
+      animation: kb 16s ease-in-out both;
     }
     @keyframes kb {
       from { transform: scale(1.00); }
       to   { transform: scale(1.05); }
     }
-    /* gradient: dark at bottom for text, subtle top-left corner dark for logo */
+
     .slide-banner::after {
       content: '';
       position: absolute; inset: 0;
       background:
         linear-gradient(to bottom,
-          rgba(28,28,28,0) 20%,
-          rgba(28,28,28,.5) 60%,
-          rgba(28,28,28,.88) 100%
+          rgba(28,28,28,0) 10%,
+          rgba(28,28,28,.55) 55%,
+          rgba(28,28,28,.92) 100%
         ),
-        radial-gradient(ellipse at top left,
-          rgba(28,28,28,.35) 0%,
-          transparent 50%
+        radial-gradient(ellipse at top center,
+          rgba(28,28,28,.40) 0%,
+          transparent 44%
         );
       z-index: 1;
     }
 
-    /* bottom-left text block */
     .banner-info {
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
+      position: absolute; bottom: 0; left: 0; right: 0;
       padding: 0 clamp(40px,6vw,90px) clamp(48px,6vh,80px);
-      z-index: 2;
-      display: flex;
-      flex-direction: column;
+      z-index: 2; display: flex; flex-direction: column;
       gap: clamp(8px,1.2vh,16px);
     }
-
     .banner-eyebrow {
       font-size: clamp(11px,1vw,15px); font-weight: 500;
-      color: rgba(255,255,255,.55); letter-spacing: .18em; text-transform: uppercase;
+      color: rgba(255,255,255,.55); letter-spacing: .12em; text-transform: uppercase;
       text-shadow: 0 1px 12px rgba(0,0,0,.6);
     }
-
     .banner-headline {
       font-size: clamp(40px,6vw,88px); font-weight: 600;
-      color: var(--white); line-height: 1.0;
-      letter-spacing: -.01em;
+      color: var(--white); line-height: 1.05; letter-spacing: -.01em;
       text-shadow: 0 3px 28px rgba(0,0,0,.7), 0 1px 6px rgba(0,0,0,.5);
+      overflow: hidden;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
     }
-
     .banner-offer {
       display: flex; align-items: center; gap: clamp(14px,1.8vw,24px);
       margin-top: clamp(4px,.6vh,8px);
     }
     .banner-price {
       font-size: clamp(28px,3.5vw,52px); font-weight: 600;
-      color: var(--gold);
-      text-shadow: 0 2px 20px rgba(0,0,0,.6);
+      color: var(--gold); text-shadow: 0 2px 20px rgba(0,0,0,.6);
     }
     .banner-badge {
       font-size: clamp(11px,1.1vw,16px); font-weight: 600;
       color: var(--dark); background: var(--gold);
       letter-spacing: .06em; text-transform: uppercase;
-      border-radius: 4px; padding: 5px 12px;
-      white-space: nowrap;
+      border-radius: 100px; padding: 5px 16px; white-space: nowrap;
     }
     .banner-scan {
-      font-size: clamp(12px,1.1vw,16px);
-      color: rgba(255,255,255,.45);
+      font-size: clamp(12px,1.1vw,16px); color: rgba(255,255,255,.45);
       letter-spacing: .06em; text-transform: uppercase;
-      text-shadow: 0 1px 10px rgba(0,0,0,.5);
+      text-shadow: 0 1px 16px rgba(0,0,0,.7);
     }
 
-    /* logo mark top-center */
     .banner-logo {
       position: absolute; top: clamp(18px,2.5vw,36px); left: 50%;
-      transform: translateX(-50%);
-      z-index: 2;
+      transform: translateX(-50%); z-index: 2;
     }
     .banner-logo img {
       height: clamp(26px,3.4vw,48px); width: auto;
-      filter: brightness(0) invert(1); opacity: .6;
+      filter: brightness(0) invert(1); opacity: .75;
     }
 
-    /* ══ ANIMATIONEN ═══════════════════════════ */
+    /* ══ ANIMATIONEN ════════════════════════════ */
     @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(18px); }
+      from { opacity: 0; transform: translateY(24px); }
       to   { opacity: 1; transform: translateY(0); }
     }
     @keyframes fadeIn {
@@ -374,92 +331,52 @@
       to   { opacity: 1; }
     }
 
-    /* Banner-Slides: gestaffelter Text-Reveal */
-    .slide.active .banner-eyebrow {
-      animation: fadeUp .55s cubic-bezier(.22,.68,0,1.1) .15s both;
-    }
-    .slide.active .banner-headline {
-      animation: fadeUp .65s cubic-bezier(.22,.68,0,1.1) .32s both;
-    }
-    .slide.active .banner-offer {
-      animation: fadeUp .55s cubic-bezier(.22,.68,0,1.1) .52s both;
-    }
-    .slide.active .banner-scan {
-      animation: fadeIn .5s ease .72s both;
-    }
+    /* Banner */
+    .slide.active .banner-eyebrow  { animation: fadeUp .55s cubic-bezier(.22,.68,0,1.1) .15s both; }
+    .slide.active .banner-headline { animation: fadeUp .65s cubic-bezier(.22,.68,0,1.1) .30s both; }
+    .slide.active .banner-offer    { animation: fadeUp .55s cubic-bezier(.22,.68,0,1.1) .50s both; }
+    .slide.active .banner-scan     { animation: fadeIn .5s  ease                        .70s both; }
 
-    /* QR-Slide: gestaffeltes Fade-In */
-    .slide.active .info-offer {
-      animation: fadeUp .6s cubic-bezier(.22,.68,0,1.1) .2s both;
-    }
-    .slide.active .info-pill {
-      animation: fadeUp .5s cubic-bezier(.22,.68,0,1.1) .4s both;
-    }
-    .slide.active .info-url {
-      animation: fadeIn .45s ease .55s both;
-    }
-    .slide.active .info-note {
-      animation: fadeIn .45s ease .65s both;
-    }
-    .slide.active .qr-wrap {
-      animation: fadeUp .6s cubic-bezier(.22,.68,0,1.1) .3s both;
-    }
-    .slide.active .qr-label {
-      animation: fadeIn .4s ease .6s both;
-    }
+    /* Hero */
+    .slide.active .hero-logo    { animation: fadeIn .5s  ease                        .10s both; }
+    .slide.active .hero-eyebrow { animation: fadeIn .5s  ease                        .20s both; }
+    .slide.active .hero-num     { animation: fadeUp .70s cubic-bezier(.22,.68,0,1.1) .25s both; }
+    .slide.active .hero-label   { animation: fadeUp .55s cubic-bezier(.22,.68,0,1.1) .45s both; }
+    .slide.active .hero-url     { animation: fadeIn .45s ease                        .62s both; }
 
-    /* Instagram-Slide: gleich wie QR */
-    .slide.active .insta-handle {
-      animation: fadeUp .65s cubic-bezier(.22,.68,0,1.1) .2s both;
-    }
-    #toast {
-      position: fixed; top: clamp(16px,2.5vw,28px); right: clamp(16px,2.5vw,28px);
-      z-index: 200; background: var(--white);
-      border: 1px solid var(--border); border-radius: 14px;
-      padding: 12px 20px 12px 14px;
-      display: flex; align-items: center; gap: 12px;
-      box-shadow: 0 8px 32px rgba(0,0,0,.12);
-      font-size: 13px; color: var(--dark);
-      transform: translateY(-10px); opacity: 0;
-      transition: opacity .35s ease, transform .35s ease;
-      pointer-events: none;
-    }
-    #toast.show { opacity:1; transform:translateY(0); }
-    .toast-icon {
-      width: 30px; height: 30px; border-radius: 50%;
-      background: var(--gold-bg); border: 1px solid var(--gold);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 14px; color: var(--gold); flex-shrink: 0;
-    }
-    .toast-title { font-weight: 600; font-size: 13px; }
-    .toast-sub   { font-size: 11px; color: var(--muted); margin-top: 1px; }
+    /* QR / Info */
+    .slide.active .info-offer   { animation: fadeUp .60s cubic-bezier(.22,.68,0,1.1) .20s both; }
+    .slide.active .info-pill    { animation: fadeUp .50s cubic-bezier(.22,.68,0,1.1) .38s both; }
+    .slide.active .info-url     { animation: fadeIn .45s ease                        .52s both; }
+    .slide.active .info-note    { animation: fadeIn .45s ease                        .62s both; }
+    .slide.active .qr-wrap      { animation: fadeUp .60s cubic-bezier(.22,.68,0,1.1) .28s both; }
+    .slide.active .qr-label     { animation: fadeIn .40s ease                        .58s both; }
+
+    /* Instagram handle */
+    .slide.active .insta-handle { animation: fadeUp .65s cubic-bezier(.22,.68,0,1.1) .20s both; }
   </style>
 </head>
 <body>
 
 <div id="stage">
 
-  <!-- ══ SLIDE: QR SHOP ══════════════════════════════ -->
+  <!-- ══ QR SHOP ══════════════════════════════════════ -->
   <div class="slide active slide-info" id="slide-qr">
     <div class="info-left">
       <img class="logo-img"
         src="https://im-glauben.de/cdn/shop/files/www.im-glauben.de.png?v=1693408582"
         alt="ImGlauben" />
-
       <div class="info-tagline">Christliche Geschenk- &amp; Dekoartikel</div>
       <div class="info-rule"></div>
-
       <div class="info-offer">
         <div class="info-num"><em>20&thinsp;%</em> auf alles</div>
         <div class="info-sub">Exklusiv für Besucher<br/>der Hirtenkonferenz</div>
       </div>
-
       <div class="info-pill">
-        <span>Hirtenkonferenz</span>
+        <span class="pill-main">Hirtenkonferenz</span>
         <div class="info-pill-line"></div>
-        <span>Sonderrabatt</span>
+        <span class="pill-sub">Sonderrabatt</span>
       </div>
-
       <span class="info-url">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/>
@@ -467,24 +384,21 @@
         </svg>
         im-glauben.de
       </span>
-
       <div class="info-note">Kein Code nötig – Rabatt wird<br/>automatisch im Shop angezeigt.</div>
     </div>
-
     <div class="info-sep"></div>
-
     <div class="info-right">
       <div class="qr-wrap">
-        <div class="qr-box gold-corners">
+        <div class="qr-box">
           <div class="cm-bl"></div><div class="cm-tr"></div>
-          <canvas id="qrCanvas"></canvas>
+          <canvas id="qrCanvas" role="img" aria-label="QR-Code für im-glauben.de"></canvas>
         </div>
       </div>
       <div class="qr-label">Jetzt scannen &amp; sparen</div>
     </div>
   </div>
 
-  <!-- ══ SLIDE: HERO ══════════════════════════════════ -->
+  <!-- ══ HERO ═════════════════════════════════════════ -->
   <div class="slide" id="slide-hero">
     <div class="hero-inner">
       <img class="hero-logo"
@@ -498,21 +412,18 @@
     </div>
   </div>
 
-  <!-- ══ SLIDE: INSTAGRAM ════════════════════════════ -->
+  <!-- ══ INSTAGRAM ════════════════════════════════════ -->
   <div class="slide slide-info" id="slide-instagram">
     <div class="info-left">
       <img class="logo-img"
         src="https://im-glauben.de/cdn/shop/files/www.im-glauben.de.png?v=1693408582"
         alt="ImGlauben" />
-
       <div class="info-tagline">Folgt uns auf Instagram</div>
       <div class="info-rule"></div>
-
       <div class="info-offer">
         <div class="insta-handle">@imglauben</div>
         <div class="info-sub">Inspirierende Inhalte<br/>und neue Produkte</div>
       </div>
-
       <span class="info-url">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
           <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
@@ -521,58 +432,38 @@
         </svg>
         instagram.com/imglauben
       </span>
-
       <div class="info-note">Jetzt folgen &amp; keine Neuheiten<br/>und Aktionen verpassen.</div>
     </div>
-
     <div class="info-sep"></div>
-
     <div class="info-right">
-      <div class="qr-wrap insta">
-        <div class="qr-box insta-corners">
+      <div class="qr-wrap">
+        <div class="qr-box">
           <div class="cm-bl"></div><div class="cm-tr"></div>
-          <canvas id="qrCanvasInsta"></canvas>
+          <canvas id="qrCanvasInsta" role="img" aria-label="QR-Code für instagram.com/imglauben"></canvas>
         </div>
       </div>
       <div class="qr-label">Jetzt scannen &amp; folgen</div>
     </div>
   </div>
 
-  <!-- ══ BANNER SLIDES (generated by JS) ════════════ -->
+  <!-- ══ BANNER SLIDES ════════════════════════════════ -->
   <div id="banner-slides"></div>
 
 </div>
 
-<!-- Progress + Dots -->
 <div id="progress"><div id="progress-bar"></div></div>
 <div id="dots"></div>
 
 <script>
-// ── Banner slides (from im-glauben.de homepage slideshow) ──
+// ── Banner data ──────────────────────────────────────────
 const BANNERS = [
-  {
-    img:      'https://im-glauben.de/cdn/shop/files/3_6752e6a8-811e-4e18-8015-2aee04920019.jpg?width=1800',
-    eyebrow:  'NEU',
-    headline: 'Fußmatten',
-  },
-  {
-    img:      'https://im-glauben.de/cdn/shop/files/banner_trinkflaschen_edelstahl_glas_v2.jpg?width=1800',
-    eyebrow:  'Schlicht im Design. Stark im Glauben.',
-    headline: 'Trinkflaschen',
-  },
-  {
-    img:      'https://im-glauben.de/cdn/shop/files/Shopify_banner_5.jpg?width=1800',
-    eyebrow:  'Handmade',
-    headline: 'Trinkgeschirr aus Steingut & Glas',
-  },
-  {
-    img:      'https://im-glauben.de/cdn/shop/files/buchstuetze_banner1.jpg?width=1800',
-    eyebrow:  'NEU',
-    headline: 'Buchstütze',
-  },
+  { img: 'https://im-glauben.de/cdn/shop/files/3_6752e6a8-811e-4e18-8015-2aee04920019.jpg?width=1800',  eyebrow: 'NEU', headline: 'Fußmatten' },
+  { img: 'https://im-glauben.de/cdn/shop/files/banner_trinkflaschen_edelstahl_glas_v2.jpg?width=1800', eyebrow: 'Schlicht im Design. Stark im Glauben.', headline: 'Trinkflaschen' },
+  { img: 'https://im-glauben.de/cdn/shop/files/Shopify_banner_5.jpg?width=1800',                       eyebrow: 'Handmade', headline: 'Trinkgeschirr aus Steingut & Glas' },
+  { img: 'https://im-glauben.de/cdn/shop/files/buchstuetze_banner1.jpg?width=1800',                    eyebrow: 'NEU', headline: 'Buchstütze' },
 ];
 
-// Preload banner images
+// Preload
 BANNERS.forEach(b => { const i = new Image(); i.src = b.img; });
 
 // Build banner slides
@@ -581,55 +472,67 @@ BANNERS.forEach((b, idx) => {
   const slide = document.createElement('div');
   slide.className = 'slide slide-banner';
   slide.id = 'slide-banner-' + idx;
-  slide.innerHTML = `
-    <div class="banner-img" style="background-image:url('${b.img}')"></div>
-    <div class="banner-logo">
-      <img src="https://im-glauben.de/cdn/shop/files/www.im-glauben.de.png?v=1693408582" alt="ImGlauben" />
-    </div>
-    <div class="banner-info">
-      <div class="banner-eyebrow">${b.eyebrow}</div>
-      <div class="banner-headline">${b.headline}</div>
-      <div class="banner-offer">
-        <div class="banner-price">&#8722;20&thinsp;%</div>
-        <div class="banner-badge">Hirtenkonferenz</div>
-      </div>
-      <div class="banner-scan">QR-Code scannen &middot; im-glauben.de</div>
-    </div>
-  `;
+
+  const imgDiv = document.createElement('div');
+  imgDiv.className = 'banner-img';
+  imgDiv.style.backgroundImage = `url('${b.img}')`;
+  imgDiv.onerror = () => { imgDiv.style.background = 'var(--dark)'; };
+
+  const logoDiv = document.createElement('div');
+  logoDiv.className = 'banner-logo';
+  const logoImg = document.createElement('img');
+  logoImg.src = 'https://im-glauben.de/cdn/shop/files/www.im-glauben.de.png?v=1693408582';
+  logoImg.alt = 'ImGlauben';
+  logoImg.onerror = function() { this.style.display = 'none'; };
+  logoDiv.appendChild(logoImg);
+
+  const info = document.createElement('div');
+  info.className = 'banner-info';
+
+  const ey = document.createElement('div'); ey.className = 'banner-eyebrow'; ey.textContent = b.eyebrow;
+  const hl = document.createElement('div'); hl.className = 'banner-headline'; hl.textContent = b.headline;
+  const of = document.createElement('div'); of.className = 'banner-offer';
+  const pr = document.createElement('div'); pr.className = 'banner-price'; pr.innerHTML = '&#8722;20&thinsp;%';
+  const ba = document.createElement('div'); ba.className = 'banner-badge'; ba.textContent = 'Hirtenkonferenz';
+  of.append(pr, ba);
+  const sc = document.createElement('div'); sc.className = 'banner-scan'; sc.innerHTML = 'QR-Code scannen &middot; im-glauben.de';
+  info.append(ey, hl, of, sc);
+
+  slide.append(imgDiv, logoDiv, info);
   container.appendChild(slide);
 });
 
-// ── Sequence: QR(12s) → Hero(7s) → Banner(10s) → QR(10s) → Banner(10s) → Insta(12s) → Banner(10s) → Banner(10s) → QR … ──
+// ── Sequence ─────────────────────────────────────────────
 function buildSequence() {
-  const ids  = [];
-  const durs = [];
-
+  const ids = [], durs = [];
   ids.push('slide-qr');   durs.push(12000);
   ids.push('slide-hero'); durs.push(7000);
-
-  // interleave all 4 banners with QR/insta breaks
   BANNERS.forEach((_, i) => {
     ids.push('slide-banner-' + i); durs.push(10000);
     if (i === 1) { ids.push('slide-qr');        durs.push(10000); }
     if (i === 3) { ids.push('slide-instagram'); durs.push(12000); }
   });
-
-  // end with QR before looping
   ids.push('slide-qr'); durs.push(10000);
   return { ids, durs };
 }
 
 const { ids: SLIDE_IDS, durs: SLIDE_DUR } = buildSequence();
 let currentIdx = 0, progressTimer = null;
+let slideStartTime = Date.now();
+
+// Info slides (light background) that need dark dots
+const LIGHT_SLIDES = new Set(['slide-qr', 'slide-instagram']);
+const stageEl = document.getElementById('stage');
 
 // Dots
 const dotsEl = document.getElementById('dots');
-SLIDE_IDS.forEach((_,i) => {
+SLIDE_IDS.forEach((_, i) => {
   const d = document.createElement('div');
-  d.className = 'dot' + (i===0 ? ' active' : '');
+  d.className = 'dot' + (i === 0 ? ' active' : '');
   dotsEl.appendChild(d);
 });
 const getDot = i => dotsEl.children[i];
+const progressBar = document.getElementById('progress-bar');
 
 function goToSlide(idx) {
   const prevEl = document.getElementById(SLIDE_IDS[currentIdx]);
@@ -637,71 +540,106 @@ function goToSlide(idx) {
   prevEl.classList.remove('active');
   getDot(currentIdx).classList.remove('active');
   currentIdx = idx;
-  // Kurzer Reflow damit CSS-Animationen neu starten
+  // Force animation restart
   nextEl.classList.remove('active');
   void nextEl.offsetWidth;
   nextEl.classList.add('active');
   getDot(currentIdx).classList.add('active');
+  // Dot color: dark on light slides
+  if (LIGHT_SLIDES.has(SLIDE_IDS[currentIdx])) {
+    stageEl.setAttribute('data-light', '');
+  } else {
+    stageEl.removeAttribute('data-light');
+  }
+  slideStartTime = Date.now();
   startProgress(SLIDE_DUR[currentIdx]);
 }
+
 function nextSlide() { goToSlide((currentIdx + 1) % SLIDE_IDS.length); }
+function prevSlide() { goToSlide((currentIdx - 1 + SLIDE_IDS.length) % SLIDE_IDS.length); }
 
 function startProgress(dur) {
   clearTimeout(progressTimer);
-  const bar = document.getElementById('progress-bar');
-  bar.style.transition = 'none'; bar.style.width = '0%';
-  void bar.offsetWidth;
-  bar.style.transition = `width ${dur}ms linear`;
-  bar.style.width = '100%';
+  progressBar.style.transition = 'none';
+  progressBar.style.width = '0%';
+  void progressBar.offsetWidth;
+  progressBar.style.transition = `width ${dur}ms linear`;
+  progressBar.style.width = '100%';
   progressTimer = setTimeout(nextSlide, dur);
 }
 
+// Initial dot state
+stageEl.setAttribute('data-light', ''); // first slide is info
+slideStartTime = Date.now();
 startProgress(SLIDE_DUR[0]);
 
-// ── Tap-Navigation: links zurück, mitte+rechts vor, halten = Pause ──
-const stage = document.getElementById('stage');
-let holdTimer = null;
-let isHolding = false;
+// ── Touch / Tap navigation ────────────────────────────────
+let holdTimer = null, isHolding = false, pausedAt = 0;
+let touchStartX = 0, touchStartY = 0;
 
 function pointerDown(e) {
+  if (e.type === 'touchstart') {
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+  }
   isHolding = false;
   holdTimer = setTimeout(() => {
     isHolding = true;
-    // Pause: Progress-Bar einfrieren
-    const bar = document.getElementById('progress-bar');
-    const computed = getComputedStyle(bar).width;
-    bar.style.transition = 'none';
-    bar.style.width = computed;
+    pausedAt = Date.now();
+    // Freeze progress bar at current position
+    const computed = getComputedStyle(progressBar).width;
+    progressBar.style.transition = 'none';
+    progressBar.style.width = computed;
     clearTimeout(progressTimer);
   }, 300);
 }
 
 function pointerUp(e) {
+  // Prevent synthetic mouse events after touch
+  if (e.type === 'touchend') e.preventDefault();
   clearTimeout(holdTimer);
+
   if (isHolding) {
-    // Loslassen: restliche Zeit fortsetzen (einfach neu starten mit voller Dauer)
     isHolding = false;
-    startProgress(SLIDE_DUR[currentIdx]);
+    // Resume with remaining time
+    const elapsed = pausedAt - slideStartTime;
+    const remaining = Math.max(1500, SLIDE_DUR[currentIdx] - elapsed);
+    slideStartTime = Date.now() - elapsed;
+    startProgress(remaining);
     return;
   }
-  // Tippen: linkes Drittel = zurück, sonst = vor
+
+  // Check drag threshold
+  if (e.changedTouches) {
+    const dx = Math.abs(e.changedTouches[0].clientX - touchStartX);
+    const dy = Math.abs(e.changedTouches[0].clientY - touchStartY);
+    if (dx > 10 || dy > 10) return;
+  }
+
   const x = e.changedTouches ? e.changedTouches[0].clientX : e.clientX;
-  const leftThird = window.innerWidth / 3;
-  if (x < leftThird) {
-    goToSlide((currentIdx - 1 + SLIDE_IDS.length) % SLIDE_IDS.length);
+  if (x < window.innerWidth / 3) {
+    prevSlide();
   } else {
     nextSlide();
   }
 }
 
-stage.addEventListener('touchstart', pointerDown, { passive: true });
-stage.addEventListener('touchend',   pointerUp);
-stage.addEventListener('mousedown',  pointerDown);
-stage.addEventListener('mouseup',    pointerUp);
+stageEl.addEventListener('touchstart', pointerDown, { passive: true });
+stageEl.addEventListener('touchend',   pointerUp);
+stageEl.addEventListener('touchcancel', () => {
+  clearTimeout(holdTimer);
+  isHolding = false;
+  const elapsed = Date.now() - slideStartTime;
+  const remaining = Math.max(1500, SLIDE_DUR[currentIdx] - elapsed);
+  startProgress(remaining);
+});
+stageEl.addEventListener('mousedown', pointerDown);
+stageEl.addEventListener('mouseup',   pointerUp);
 
-// ── QR Codes ─────────────────────────────────────────────
+// ── QR Codes ──────────────────────────────────────────────
 const QR_SHOP  = 'https://im-glauben.de';
 const QR_INSTA = 'https://www.instagram.com/imglauben';
+let _qrLoading = false;
 
 function qrSize() {
   return Math.floor(Math.min(window.innerHeight * .66, window.innerWidth * .38, 440));
@@ -710,10 +648,13 @@ function qrSize() {
 function renderQR() {
   const size = qrSize();
   if (window._qrReady) { drawQR(size); return; }
+  if (_qrLoading) return;
+  _qrLoading = true;
   const s = document.createElement('script');
   s.src = 'https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js';
-  s.onload = () => { window._qrReady = true; drawQR(size); };
+  s.onload = () => { window._qrReady = true; _qrLoading = false; drawQR(size); };
   s.onerror = () => {
+    _qrLoading = false;
     [['qrCanvas', QR_SHOP], ['qrCanvasInsta', QR_INSTA]].forEach(([id, url]) => {
       const c = document.getElementById(id); if (!c) return;
       const img = document.createElement('img');
@@ -729,15 +670,17 @@ function drawQR(size) {
   const shop  = document.getElementById('qrCanvas');
   const insta = document.getElementById('qrCanvasInsta');
   if (shop)  QRCode.toCanvas(shop,  QR_SHOP,  { width: size, margin: 1, color: { dark: '#1c1c1c', light: '#ffffff' }, errorCorrectionLevel: 'H' }, e => e && console.warn(e));
-  if (insta) QRCode.toCanvas(insta, QR_INSTA, { width: size, margin: 1, color: { dark: '#833ab4', light: '#ffffff' }, errorCorrectionLevel: 'H' }, e => e && console.warn(e));
+  if (insta) QRCode.toCanvas(insta, QR_INSTA, { width: size, margin: 1, color: { dark: '#1c1c1c', light: '#ffffff' }, errorCorrectionLevel: 'H' }, e => e && console.warn(e));
 }
 
-// ── Init ─────────────────────────────────────────────────
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', () => { renderQR(); });
-} else { renderQR(); }
+// Use ResizeObserver for QR resize (more reliable than orientationchange)
+const ro = new ResizeObserver(() => { if (window._qrReady) drawQR(qrSize()); });
+ro.observe(document.documentElement);
 
-window.addEventListener('orientationchange', () => setTimeout(renderQR, 350));
+// ── Init ──────────────────────────────────────────────────
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', renderQR);
+} else { renderQR(); }
 
 async function requestWakeLock() {
   try { if ('wakeLock' in navigator) await navigator.wakeLock.request('screen'); } catch(_) {}
@@ -747,7 +690,7 @@ document.addEventListener('visibilitychange', () => {
   if (document.visibilityState === 'visible') requestWakeLock();
 });
 
-// ── Service Worker (PWA) ──────────────────────────────
+// ── Service Worker ────────────────────────────────────────
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/im-glauben-qr/sw.js', { scope: '/im-glauben-qr/' })

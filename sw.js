@@ -19,15 +19,7 @@ self.addEventListener('activate', e => {
   e.waitUntil(
     caches.keys().then(keys =>
       Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
-    ).then(() => {
-      // Alle offenen Tabs/Fenster sofort übernehmen
-      return self.clients.claim();
-    }).then(() => {
-      // Allen Clients sagen: bitte neu laden
-      return self.clients.matchAll({ type: 'window' }).then(clients => {
-        clients.forEach(client => client.navigate(client.url));
-      });
-    })
+    ).then(() => self.clients.claim())
   );
 });
 
