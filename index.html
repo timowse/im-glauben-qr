@@ -15,21 +15,17 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:        #ede8e0;
-      --white:     #ffffff;
-      --dark:      #1c1c1c;
-      --mid:       #5a5a5a;
-      --muted:     #9a9690;
-      --border:    #d4cfc8;
-      --gold:      #b8975a;
-      --gold-bg:   #f5edd8;
-      --gold-dim:  rgba(184,151,90,.18);
-      --teal:      #108474;
-      --teal-bg:   rgba(16,132,116,.12);
-      --teal-dim:  rgba(16,132,116,.25);
-      --insta1:    #833ab4;
-      --insta2:    #fd1d1d;
-      --insta3:    #fcb045;
+      --bg:      #ede8e0;
+      --white:   #ffffff;
+      --dark:    #1c1c1c;
+      --mid:     #5a5a5a;
+      --muted:   #9a9690;
+      --border:  #d4cfc8;
+      --gold:    #b8975a;
+      --gold-bg: #f5edd8;
+      --insta1:  #833ab4;
+      --insta2:  #fd1d1d;
+      --insta3:  #fcb045;
     }
 
     html, body {
@@ -41,420 +37,378 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* ══════════════════════════════════════════
-       SLIDE SYSTEM
-    ══════════════════════════════════════════ */
+    /* ══ SLIDE SYSTEM ══════════════════════════ */
     #stage {
       position: fixed; inset: 0;
       padding: env(safe-area-inset-top,0) env(safe-area-inset-right,0)
                env(safe-area-inset-bottom,0) env(safe-area-inset-left,0);
       cursor: pointer;
     }
-
     .slide {
       position: absolute; inset: 0;
-      opacity: 0;
-      transition: opacity .7s ease;
+      opacity: 0; transition: opacity .8s ease;
       pointer-events: none;
     }
-    .slide.active {
-      opacity: 1;
-      pointer-events: all;
-    }
+    .slide.active { opacity: 1; pointer-events: all; }
 
-    /* ── progress bar ──────────────────────── */
+    /* progress bar */
     #progress {
       position: fixed; bottom: 0; left: 0; right: 0;
-      height: 3px;
-      background: rgba(255,255,255,.10);
-      z-index: 99;
+      height: 2px; background: rgba(255,255,255,.08); z-index: 99;
     }
     #progress-bar {
-      height: 100%;
-      background: var(--gold);
-      width: 0%;
-      transition: none;
+      height: 100%; background: var(--gold); width: 0%; transition: none;
     }
 
-    /* ── slide dots ───────────────────────── */
+    /* dots */
     #dots {
-      position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%);
-      display: flex; gap: 6px; z-index: 98;
+      position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 7px; z-index: 98;
     }
     .dot {
       width: 5px; height: 5px; border-radius: 50%;
-      background: rgba(255,255,255,.25);
-      transition: background .3s, transform .3s;
+      background: rgba(255,255,255,.22); transition: background .3s, transform .3s;
     }
-    .dot.active {
-      background: var(--gold);
-      transform: scale(1.4);
-    }
+    .dot.active { background: var(--gold); transform: scale(1.5); }
 
-    /* ══════════════════════════════════════════
-       QR SLIDE – shared layout
-    ══════════════════════════════════════════ */
-    .slide-qr-layout {
+    /* ══ QR / INFO SLIDE ═══════════════════════ */
+    .slide-info {
       background: var(--bg);
       display: flex;
+      overflow: hidden;
     }
 
-    .qr-left {
+    .info-left {
       flex: 0 0 48%;
       display: flex; flex-direction: column; justify-content: center;
-      padding: clamp(32px,4.5vw,72px);
-      gap: clamp(14px,2.2vh,28px);
+      padding: clamp(36px,5vw,80px);
+      gap: clamp(16px,2.4vh,32px);
+      overflow: hidden;
     }
 
     .logo-img {
       display: block;
-      width: clamp(150px,22vw,280px);
+      width: clamp(140px,21vw,260px);
       height: auto;
       mix-blend-mode: multiply;
+      flex-shrink: 0;
     }
 
-    .qr-tagline {
-      font-size: clamp(11px,1vw,14px);
+    .info-tagline {
+      font-size: clamp(10px,.9vw,13px);
       color: var(--muted);
-      letter-spacing: .12em;
+      letter-spacing: .14em;
       text-transform: uppercase;
+      flex-shrink: 0;
     }
 
-    .qr-divider { width: 40px; height: 1px; background: var(--border); }
+    .info-rule { width: 36px; height: 1px; background: var(--border); flex-shrink: 0; }
 
-    .qr-offer-num {
-      font-size: clamp(56px,10vw,130px);
+    /* Big number block */
+    .info-offer {
+      flex-shrink: 0;
+      overflow: visible;
+    }
+    .info-num {
+      font-size: clamp(60px,11vw,140px);
       font-weight: 600;
       line-height: .88;
-      letter-spacing: -.02em;
+      letter-spacing: -.025em;
+      color: var(--dark);
     }
-    .qr-offer-num em { font-style: normal; color: var(--gold); }
-
-    .qr-offer-sub {
-      font-size: clamp(14px,1.5vw,20px);
+    .info-num em { font-style: normal; color: var(--gold); }
+    .info-sub {
+      font-size: clamp(13px,1.4vw,19px);
       font-weight: 400;
       color: var(--mid);
-      margin-top: 4px;
+      margin-top: clamp(6px,.8vh,12px);
+      line-height: 1.4;
     }
 
-    .qr-badge {
-      display: inline-flex; align-items: center; gap: 8px; width: fit-content;
-      border: 1.5px solid var(--teal); border-radius: 100px;
-      background: var(--teal-bg);
-      padding: clamp(6px,.8vh,10px) clamp(14px,1.8vw,24px);
+    /* pill badge */
+    .info-pill {
+      display: inline-flex; align-items: center; gap: 10px;
+      width: fit-content; flex-shrink: 0;
+      border: 1px solid rgba(184,151,90,.5);
+      border-radius: 100px;
+      background: var(--gold-bg);
+      padding: clamp(7px,.9vh,11px) clamp(16px,1.8vw,26px);
     }
-    .qr-badge .cross { color: var(--teal); font-size: clamp(12px,1.1vw,15px); }
-    .qr-badge span {
-      font-size: clamp(10px,.9vw,13px); font-weight: 600;
-      color: var(--teal); letter-spacing: .07em; text-transform: uppercase;
+    .info-pill-line { width: 1px; height: 14px; background: rgba(184,151,90,.4); }
+    .info-pill span {
+      font-size: clamp(10px,.85vw,13px); font-weight: 600;
+      color: var(--gold); letter-spacing: .08em; text-transform: uppercase;
     }
 
-    .qr-url {
-      display: inline-flex; align-items: center; gap: 7px; width: fit-content;
-      background: rgba(0,0,0,.05); border: 1px solid var(--border); border-radius: 100px;
+    /* url chip */
+    .info-url {
+      display: inline-flex; align-items: center; gap: 8px;
+      width: fit-content; flex-shrink: 0;
+      background: rgba(0,0,0,.04); border: 1px solid var(--border); border-radius: 100px;
       padding: clamp(5px,.6vh,8px) clamp(14px,1.5vw,20px);
       font-size: clamp(12px,1.05vw,15px); color: var(--mid);
       text-decoration: none;
     }
 
-    .qr-note {
-      font-size: clamp(11px,.9vw,13px);
-      color: var(--muted);
-      line-height: 1.7;
+    .info-note {
+      font-size: clamp(10px,.85vw,12px);
+      color: var(--muted); line-height: 1.75;
+      flex-shrink: 0;
     }
 
-    /* right panel */
-    .qr-sep { width: 1px; background: var(--border); margin: clamp(24px,3.5vh,56px) 0; }
+    /* separator */
+    .info-sep { width: 1px; background: var(--border); margin: clamp(28px,4vh,60px) 0; flex-shrink: 0; }
 
-    .qr-right {
+    /* QR panel */
+    .info-right {
       flex: 1;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
-      padding: clamp(24px,3.5vw,56px);
-      gap: clamp(14px,2.2vh,24px);
+      padding: clamp(28px,4vw,60px);
+      gap: clamp(16px,2.4vh,28px);
+      overflow: hidden;
     }
 
-    /* QR glow animation */
-    .qr-frame-wrap { position: relative; }
-    .qr-frame-wrap::before {
+    .qr-wrap { position: relative; flex-shrink: 0; }
+    .qr-wrap::before {
       content: '';
-      position: absolute; inset: -14px; border-radius: 30px;
-      animation: qr-breathe 3s ease-in-out infinite;
+      position: absolute; inset: -16px; border-radius: 32px;
+      animation: glow 3.5s ease-in-out infinite;
     }
-    @keyframes qr-breathe {
-      0%,100% { box-shadow: 0 0 10px 4px rgba(16,132,116,.06); }
-      50%      { box-shadow: 0 0 36px 16px rgba(16,132,116,.22); }
+    @keyframes glow {
+      0%,100% { box-shadow: 0 0 0 0 rgba(184,151,90,0); }
+      50%      { box-shadow: 0 0 40px 12px rgba(184,151,90,.18); }
     }
-    .qr-frame-wrap.insta::before {
-      animation: qr-breathe-insta 3s ease-in-out infinite;
-    }
-    @keyframes qr-breathe-insta {
-      0%,100% { box-shadow: 0 0 10px 4px rgba(131,58,180,.06); }
-      50%      { box-shadow: 0 0 36px 16px rgba(131,58,180,.22); }
+    .qr-wrap.insta::before { animation: glow-insta 3.5s ease-in-out infinite; }
+    @keyframes glow-insta {
+      0%,100% { box-shadow: 0 0 0 0 rgba(131,58,180,0); }
+      50%      { box-shadow: 0 0 40px 12px rgba(131,58,180,.18); }
     }
 
-    .qr-frame {
-      background: var(--white); border: 1.5px solid var(--border); border-radius: 22px;
-      padding: clamp(16px,2.2vw,32px);
-      box-shadow: 0 10px 48px rgba(0,0,0,.12);
+    .qr-box {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: clamp(18px,2.4vw,36px);
+      box-shadow: 0 12px 56px rgba(0,0,0,.10);
       position: relative; z-index: 1;
       display: flex; align-items: center; justify-content: center;
     }
 
-    /* corner accents */
-    .qr-frame::before, .qr-frame::after, .qr-frame .c-bl, .qr-frame .c-tr {
-      content: ''; position: absolute; width: 20px; height: 20px;
-      border-style: solid;
+    /* corner marks */
+    .qr-box::before, .qr-box::after, .qr-box .cm-bl, .qr-box .cm-tr {
+      content: ''; position: absolute; width: 22px; height: 22px; border-style: solid;
     }
-    .qr-frame.corners-teal::before,
-    .qr-frame.corners-teal::after,
-    .qr-frame.corners-teal .c-bl,
-    .qr-frame.corners-teal .c-tr { border-color: var(--teal); }
-    .qr-frame.corners-insta::before,
-    .qr-frame.corners-insta::after,
-    .qr-frame.corners-insta .c-bl,
-    .qr-frame.corners-insta .c-tr { border-color: var(--insta1); }
+    .qr-box.gold-corners::before,
+    .qr-box.gold-corners::after,
+    .qr-box.gold-corners .cm-bl,
+    .qr-box.gold-corners .cm-tr { border-color: var(--gold); }
+    .qr-box.insta-corners::before,
+    .qr-box.insta-corners::after,
+    .qr-box.insta-corners .cm-bl,
+    .qr-box.insta-corners .cm-tr { border-color: var(--insta1); }
+    .qr-box::before { top:12px; left:12px;    border-width:2.5px 0 0 2.5px; border-radius:4px 0 0 0; }
+    .qr-box::after  { bottom:12px; right:12px; border-width:0 2.5px 2.5px 0; border-radius:0 0 4px 0; }
+    .qr-box .cm-bl  { bottom:12px; left:12px;  border-width:0 0 2.5px 2.5px; border-radius:0 0 0 4px; }
+    .qr-box .cm-tr  { top:12px; right:12px;    border-width:2.5px 2.5px 0 0; border-radius:0 4px 0 0; }
 
-    .qr-frame::before { top:11px; left:11px;    border-width:2.5px 0 0 2.5px; border-radius:4px 0 0 0; }
-    .qr-frame::after  { bottom:11px; right:11px; border-width:0 2.5px 2.5px 0; border-radius:0 0 4px 0; }
-    .qr-frame .c-bl   { bottom:11px; left:11px;  border-width:0 0 2.5px 2.5px; border-radius:0 0 0 4px; }
-    .qr-frame .c-tr   { top:11px; right:11px;    border-width:2.5px 2.5px 0 0; border-radius:0 4px 0 0; }
-
-    .qr-hint {
-      font-size: clamp(11px,.9vw,13px); color: var(--muted);
-      letter-spacing: .10em; text-transform: uppercase;
-      display: flex; align-items: center; gap: 12px; width: 100%; max-width: 360px;
+    .qr-label {
+      font-size: clamp(10px,.85vw,12px); color: var(--muted);
+      letter-spacing: .12em; text-transform: uppercase;
+      display: flex; align-items: center; gap: 14px;
+      width: 100%; max-width: 380px;
+      flex-shrink: 0;
     }
-    .qr-hint::before, .qr-hint::after { content:''; flex:1; height:1px; background:var(--border); }
+    .qr-label::before, .qr-label::after { content:''; flex:1; height:1px; background:var(--border); }
 
-    /* ── Instagram slide extras ─────────────── */
+    /* ── Instagram extras ─── */
     .insta-handle {
-      font-size: clamp(32px,5.5vw,76px);
-      font-weight: 600;
-      line-height: 1;
+      font-size: clamp(36px,6vw,82px);
+      font-weight: 600; line-height: 1.1;
       letter-spacing: -.01em;
-      background: linear-gradient(135deg, var(--insta1), var(--insta2), var(--insta3));
+      /* gradient text */
+      background: linear-gradient(135deg, var(--insta1) 0%, var(--insta2) 55%, var(--insta3) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
+      padding-bottom: .08em; /* prevent descender clipping */
     }
-    .insta-badge {
-      display: inline-flex; align-items: center; gap: 8px; width: fit-content;
-      border: 1.5px solid var(--insta1); border-radius: 100px;
-      background: rgba(131,58,180,.08);
-      padding: clamp(6px,.8vh,10px) clamp(14px,1.8vw,24px);
-    }
-    .insta-badge span {
-      font-size: clamp(10px,.9vw,13px); font-weight: 600;
-      color: var(--insta1); letter-spacing: .07em; text-transform: uppercase;
-    }
-    .insta-icon { width: clamp(18px,2.2vw,28px); height: clamp(18px,2.2vw,28px); }
 
-    /* ══════════════════════════════════════════
-       SLIDE: HERO
-    ══════════════════════════════════════════ */
+    /* ══ HERO SLIDE ════════════════════════════ */
     #slide-hero {
       background: var(--dark);
       display: flex; align-items: center; justify-content: center;
     }
     .hero-inner {
       display: flex; flex-direction: column; align-items: center;
-      gap: clamp(12px,2vh,24px); padding: clamp(28px,4.5vw,68px);
+      gap: clamp(14px,2.2vh,28px);
+      padding: clamp(32px,5vw,72px);
       text-align: center;
     }
     .hero-logo {
-      width: clamp(110px,15vw,210px); height: auto;
-      filter: invert(1);
-      opacity: .9;
+      width: clamp(110px,14vw,200px); height: auto;
+      filter: invert(1); opacity: .88; flex-shrink: 0;
     }
-    .hero-rule { width: 40px; height: 1px; background: rgba(255,255,255,.2); }
+    .hero-rule { width: 36px; height: 1px; background: rgba(255,255,255,.18); flex-shrink: 0; }
     .hero-eyebrow {
-      font-size: clamp(11px,1vw,14px); font-weight: 500;
-      color: var(--teal); letter-spacing: .14em; text-transform: uppercase;
+      font-size: clamp(11px,.95vw,14px); font-weight: 500;
+      color: rgba(255,255,255,.45); letter-spacing: .16em; text-transform: uppercase;
     }
     .hero-num {
-      font-size: clamp(86px,17vw,230px); font-weight: 600;
+      font-size: clamp(88px,17vw,240px); font-weight: 600;
       line-height: .86; color: var(--white); letter-spacing: -.03em;
     }
     .hero-num em { font-style: normal; color: var(--gold); }
     .hero-label {
-      font-size: clamp(20px,3.2vw,46px); font-weight: 400;
-      color: rgba(255,255,255,.75); letter-spacing: .01em;
+      font-size: clamp(20px,3.2vw,48px); font-weight: 400;
+      color: rgba(255,255,255,.7); letter-spacing: .01em;
     }
-    .hero-sub {
+    .hero-url {
       font-family: 'Nunito', sans-serif;
-      font-size: clamp(18px,1.8vw,26px); font-weight: 300;
-      color: rgba(255,255,255,.38); letter-spacing: .06em;
+      font-size: clamp(13px,1.2vw,17px); font-weight: 300;
+      color: rgba(255,255,255,.32); letter-spacing: .08em;
       text-transform: uppercase;
     }
 
-    /* ══════════════════════════════════════════
-       SLIDE: PRODUCTS
-    ══════════════════════════════════════════ */
-    .slide-products { display: flex; }
-
-    .product-panel {
-      flex: 1;
+    /* ══ BANNER SLIDES ═════════════════════════ */
+    .slide-banner {
+      display: block;
       position: relative;
-      overflow: hidden;
-      min-width: 0;
     }
-    .product-panel + .product-panel {
-      border-left: 1px solid rgba(255,255,255,.06);
-    }
-
-    /* solo product: centered with visual framing */
-    .slide-solo { justify-content: center; }
-    .slide-solo .product-panel { flex: 0 0 72%; }
-
-    .product-img {
+    .banner-img {
       position: absolute; inset: 0;
       background-size: cover;
       background-position: center;
-      animation: ken-burns 14s ease-in-out infinite alternate;
+      animation: kb 16s ease-in-out infinite alternate;
     }
-    @keyframes ken-burns {
+    @keyframes kb {
       from { transform: scale(1.00); }
-      to   { transform: scale(1.07); }
+      to   { transform: scale(1.05); }
     }
-
-    /* deep gradient for legibility */
-    .product-panel::after {
+    /* gradient: dark at bottom for text, subtle top-left corner dark for logo */
+    .slide-banner::after {
       content: '';
       position: absolute; inset: 0;
-      background: linear-gradient(
-        to bottom,
-        rgba(28,28,28,0) 18%,
-        rgba(28,28,28,.55) 58%,
-        rgba(28,28,28,.92) 100%
-      );
+      background:
+        linear-gradient(to bottom,
+          rgba(28,28,28,0) 20%,
+          rgba(28,28,28,.5) 60%,
+          rgba(28,28,28,.88) 100%
+        ),
+        radial-gradient(ellipse at top left,
+          rgba(28,28,28,.35) 0%,
+          transparent 50%
+        );
       z-index: 1;
     }
 
-    .product-info {
-      position: absolute; bottom: 0; left: 0; right: 0;
-      padding: clamp(20px,3vw,44px) clamp(28px,3vw,44px) clamp(44px,5vh,68px);
+    /* bottom-left text block */
+    .banner-info {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 0 clamp(40px,6vw,90px) clamp(48px,6vh,80px);
       z-index: 2;
-      display: flex; flex-direction: column; gap: clamp(10px,1.6vh,18px);
+      display: flex;
+      flex-direction: column;
+      gap: clamp(8px,1.2vh,16px);
     }
 
-    /* category label */
-    .product-category {
-      display: inline-flex; align-items: center;
-      width: fit-content;
-      font-size: clamp(14px,1.4vw,20px); font-weight: 600;
-      letter-spacing: .10em; text-transform: uppercase;
-      color: var(--teal);
-      background: rgba(16,132,116,.18);
-      border: 1px solid rgba(16,132,116,.35);
-      border-radius: 4px;
-      padding: 5px 14px;
+    .banner-eyebrow {
+      font-size: clamp(11px,1vw,15px); font-weight: 500;
+      color: rgba(255,255,255,.55); letter-spacing: .18em; text-transform: uppercase;
+      text-shadow: 0 1px 12px rgba(0,0,0,.6);
     }
 
-    .product-name {
-      font-size: clamp(36px,3.8vw,56px); font-weight: 500;
-      color: var(--white); line-height: 1.2;
-      letter-spacing: .01em;
-      text-shadow: 0 2px 20px rgba(0,0,0,.7), 0 1px 4px rgba(0,0,0,.5);
-      /* max 2 lines */
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
+    .banner-headline {
+      font-size: clamp(40px,6vw,88px); font-weight: 600;
+      color: var(--white); line-height: 1.0;
+      letter-spacing: -.01em;
+      text-shadow: 0 3px 28px rgba(0,0,0,.7), 0 1px 6px rgba(0,0,0,.5);
     }
 
-    .product-prices {
-      display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap;
+    .banner-offer {
+      display: flex; align-items: center; gap: clamp(14px,1.8vw,24px);
+      margin-top: clamp(4px,.6vh,8px);
     }
-    .product-price-orig {
-      font-family: 'Nunito', sans-serif;
-      font-size: clamp(20px,1.8vw,28px); font-weight: 300;
-      color: rgba(255,255,255,.45);
-      text-decoration: line-through;
-      text-shadow: 0 1px 8px rgba(0,0,0,.5);
-    }
-    .product-price-sale {
-      font-size: clamp(36px,3.8vw,52px); font-weight: 600;
+    .banner-price {
+      font-size: clamp(28px,3.5vw,52px); font-weight: 600;
       color: var(--gold);
-      text-shadow: 0 2px 16px rgba(0,0,0,.6);
+      text-shadow: 0 2px 20px rgba(0,0,0,.6);
     }
-    .product-badge {
-      display: inline-block;
-      background: var(--teal); color: var(--white);
-      font-size: clamp(12px,1.1vw,16px); font-weight: 700;
+    .banner-badge {
+      font-size: clamp(11px,1.1vw,16px); font-weight: 600;
+      color: var(--dark); background: var(--gold);
       letter-spacing: .06em; text-transform: uppercase;
-      border-radius: 4px; padding: 4px 10px;
-      vertical-align: middle;
-    }
-
-    /* logo watermark on product slides */
-    .prod-logo-mark {
-      position: absolute; top: clamp(16px,2.2vw,32px); left: 50%;
-      transform: translateX(-50%);
-      z-index: 2;
-      display: flex; align-items: center;
+      border-radius: 4px; padding: 5px 12px;
       white-space: nowrap;
     }
-    .prod-logo-mark img {
-      height: clamp(24px,3.2vw,44px); width: auto;
-      filter: brightness(0) invert(1);
-      opacity: .65;
+    .banner-scan {
+      font-size: clamp(12px,1.1vw,16px);
+      color: rgba(255,255,255,.45);
+      letter-spacing: .06em; text-transform: uppercase;
+      text-shadow: 0 1px 10px rgba(0,0,0,.5);
     }
 
-    /* ══════════════════════════════════════════
-       SCAN TOAST
-    ══════════════════════════════════════════ */
+    /* logo mark top-center */
+    .banner-logo {
+      position: absolute; top: clamp(18px,2.5vw,36px); left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+    }
+    .banner-logo img {
+      height: clamp(26px,3.4vw,48px); width: auto;
+      filter: brightness(0) invert(1); opacity: .6;
+    }
+
+    /* ══ TOAST ═════════════════════════════════ */
     #toast {
-      position: fixed; top: clamp(16px,2.5vw,30px); right: clamp(16px,2.5vw,30px);
-      z-index: 200;
-      background: var(--white);
-      border: 1.5px solid var(--border);
-      border-radius: 14px;
+      position: fixed; top: clamp(16px,2.5vw,28px); right: clamp(16px,2.5vw,28px);
+      z-index: 200; background: var(--white);
+      border: 1px solid var(--border); border-radius: 14px;
       padding: 12px 20px 12px 14px;
       display: flex; align-items: center; gap: 12px;
       box-shadow: 0 8px 32px rgba(0,0,0,.12);
       font-size: 13px; color: var(--dark);
-      transform: translateY(-12px);
-      opacity: 0;
+      transform: translateY(-10px); opacity: 0;
       transition: opacity .35s ease, transform .35s ease;
       pointer-events: none;
     }
     #toast.show { opacity:1; transform:translateY(0); }
     .toast-icon {
-      width: 32px; height: 32px; border-radius: 50%;
-      background: rgba(16,132,116,.12); border: 1.5px solid var(--teal);
+      width: 30px; height: 30px; border-radius: 50%;
+      background: var(--gold-bg); border: 1px solid var(--gold);
       display: flex; align-items: center; justify-content: center;
-      font-size: 16px; color: var(--teal); flex-shrink: 0;
+      font-size: 14px; color: var(--gold); flex-shrink: 0;
     }
     .toast-title { font-weight: 600; font-size: 13px; }
-    .toast-sub { font-size: 11px; color: var(--muted); margin-top: 1px; }
+    .toast-sub   { font-size: 11px; color: var(--muted); margin-top: 1px; }
   </style>
 </head>
 <body>
 
 <div id="stage">
 
-  <!-- ══ QR SHOP ═══════════════════════════════ -->
-  <div class="slide active slide-qr-layout" id="slide-qr">
-
-    <div class="qr-left">
+  <!-- ══ SLIDE: QR SHOP ══════════════════════════════ -->
+  <div class="slide active slide-info" id="slide-qr">
+    <div class="info-left">
       <img class="logo-img"
         src="https://im-glauben.de/cdn/shop/files/www.im-glauben.de.png?v=1693408582"
         alt="ImGlauben" />
 
-      <div class="qr-tagline">Christliche Geschenk- &amp; Dekoartikel</div>
-      <div class="qr-divider"></div>
+      <div class="info-tagline">Christliche Geschenk- &amp; Dekoartikel</div>
+      <div class="info-rule"></div>
 
-      <div>
-        <div class="qr-offer-num"><em>20&thinsp;%</em> auf alles</div>
-        <div class="qr-offer-sub">Exklusiv während der Hirtenkonferenz</div>
+      <div class="info-offer">
+        <div class="info-num"><em>20&thinsp;%</em> auf alles</div>
+        <div class="info-sub">Exklusiv für Besucher<br/>der Hirtenkonferenz</div>
       </div>
 
-      <div class="qr-badge">
-        <span class="cross">✝</span>
-        <span>Hirtenkonferenz · Sonderangebot</span>
+      <div class="info-pill">
+        <span>Hirtenkonferenz</span>
+        <div class="info-pill-line"></div>
+        <span>Sonderrabatt</span>
       </div>
 
-      <a class="qr-url" href="https://im-glauben.de" target="_blank">
+      <a class="info-url" href="https://im-glauben.de" target="_blank">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/>
           <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
@@ -462,70 +416,52 @@
         im-glauben.de
       </a>
 
-      <div class="qr-note">Kein Code nötig – der Rabatt wird<br/>automatisch im Shop angezeigt.</div>
+      <div class="info-note">Kein Code nötig – Rabatt wird<br/>automatisch im Shop angezeigt.</div>
     </div>
 
-    <div class="qr-sep"></div>
+    <div class="info-sep"></div>
 
-    <div class="qr-right">
-      <div class="qr-frame-wrap">
-        <div class="qr-frame corners-teal">
-          <div class="c-bl"></div><div class="c-tr"></div>
+    <div class="info-right">
+      <div class="qr-wrap">
+        <div class="qr-box gold-corners">
+          <div class="cm-bl"></div><div class="cm-tr"></div>
           <canvas id="qrCanvas"></canvas>
         </div>
       </div>
-      <div class="qr-hint">Jetzt scannen &amp; sparen</div>
+      <div class="qr-label">Jetzt scannen &amp; sparen</div>
     </div>
-
   </div>
 
-  <!-- ══ HERO ══════════════════════════════════ -->
+  <!-- ══ SLIDE: HERO ══════════════════════════════════ -->
   <div class="slide" id="slide-hero">
     <div class="hero-inner">
       <img class="hero-logo"
         src="https://im-glauben.de/cdn/shop/files/www.im-glauben.de.png?v=1693408582"
         alt="ImGlauben" />
       <div class="hero-rule"></div>
-      <div class="hero-eyebrow">Hirtenkonferenz · Exklusiv am Messestand</div>
+      <div class="hero-eyebrow">Hirtenkonferenz &nbsp;&middot;&nbsp; Exklusiv</div>
       <div class="hero-num"><em>20&thinsp;%</em></div>
       <div class="hero-label">auf alles im Shop</div>
-      <div class="hero-sub">im-glauben.de · QR-Code scannen</div>
+      <div class="hero-url">im&#8209;glauben.de &nbsp;&middot;&nbsp; QR&#8209;Code scannen</div>
     </div>
   </div>
 
-  <!-- ══ INSTAGRAM ═════════════════════════════ -->
-  <div class="slide slide-qr-layout" id="slide-instagram">
-
-    <div class="qr-left">
+  <!-- ══ SLIDE: INSTAGRAM ════════════════════════════ -->
+  <div class="slide slide-info" id="slide-instagram">
+    <div class="info-left">
       <img class="logo-img"
         src="https://im-glauben.de/cdn/shop/files/www.im-glauben.de.png?v=1693408582"
         alt="ImGlauben" />
 
-      <div class="qr-tagline">Folgt uns auf Instagram</div>
-      <div class="qr-divider"></div>
+      <div class="info-tagline">Folgt uns auf Instagram</div>
+      <div class="info-rule"></div>
 
-      <div>
+      <div class="info-offer">
         <div class="insta-handle">@imglauben</div>
-        <div class="qr-offer-sub">Inspirierende Inhalte &amp; neue Produkte</div>
+        <div class="info-sub">Inspirierende Inhalte<br/>und neue Produkte</div>
       </div>
 
-      <div class="insta-badge">
-        <svg class="insta-icon" viewBox="0 0 24 24" fill="none" stroke="url(#ig-grad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <defs>
-            <linearGradient id="ig-grad" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stop-color="#833ab4"/>
-              <stop offset="50%" stop-color="#fd1d1d"/>
-              <stop offset="100%" stop-color="#fcb045"/>
-            </linearGradient>
-          </defs>
-          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
-          <circle cx="12" cy="12" r="4"/>
-          <circle cx="17.5" cy="6.5" r="1" fill="#833ab4" stroke="none"/>
-        </svg>
-        <span>Instagram · ImGlauben</span>
-      </div>
-
-      <a class="qr-url" href="https://www.instagram.com/imglauben" target="_blank">
+      <a class="info-url" href="https://www.instagram.com/imglauben" target="_blank">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
           <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
           <circle cx="12" cy="12" r="4"/>
@@ -534,31 +470,30 @@
         instagram.com/imglauben
       </a>
 
-      <div class="qr-note">Jetzt folgen &amp; keine neuen Produkte<br/>und Aktionen verpassen.</div>
+      <div class="info-note">Jetzt folgen &amp; keine Neuheiten<br/>und Aktionen verpassen.</div>
     </div>
 
-    <div class="qr-sep"></div>
+    <div class="info-sep"></div>
 
-    <div class="qr-right">
-      <div class="qr-frame-wrap insta">
-        <div class="qr-frame corners-insta">
-          <div class="c-bl"></div><div class="c-tr"></div>
+    <div class="info-right">
+      <div class="qr-wrap insta">
+        <div class="qr-box insta-corners">
+          <div class="cm-bl"></div><div class="cm-tr"></div>
           <canvas id="qrCanvasInsta"></canvas>
         </div>
       </div>
-      <div class="qr-hint">Jetzt scannen &amp; folgen</div>
+      <div class="qr-label">Jetzt scannen &amp; folgen</div>
     </div>
-
   </div>
 
-  <!-- ══ PRODUCT SLIDES (generated) ════════════ -->
-  <div id="product-slides"></div>
+  <!-- ══ BANNER SLIDES (generated by JS) ════════════ -->
+  <div id="banner-slides"></div>
 
-</div><!-- /stage -->
+</div>
 
-<!-- Scan toast -->
+<!-- Toast -->
 <div id="toast">
-  <div class="toast-icon">✓</div>
+  <div class="toast-icon">&#10003;</div>
   <div>
     <div class="toast-title">Code gescannt!</div>
     <div class="toast-sub">Weiterleitung zu im-glauben.de</div>
@@ -569,113 +504,79 @@
 <div id="dots"></div>
 
 <script>
-// ── Products (live vom Shop, diverse Kategorien) ─────
-const PRODUCTS = [
-  { title: 'Steingut-Becher "Halleluja"',          category: 'Becher',       price: '15,90 €', img: 'https://cdn.shopify.com/s/files/1/0652/9020/7489/files/halleluja1_SLIM-SANDY_IMG.jpg?width=800' },
-  { title: 'Steingut-Becher "Amen"',               category: 'Becher',       price: '15,90 €', img: 'https://cdn.shopify.com/s/files/1/0652/9020/7489/files/amen1_SLIM-SANDY_IMG.jpg?width=800' },
-  { title: 'Wimpel "Liebt einander"',              category: 'Wanddeko',     price: '14,90 €', img: 'https://cdn.shopify.com/s/files/1/0652/9020/7489/files/3_309f7524-c45d-4cf8-bcea-4e2f44e6c733.png?width=800' },
-  { title: 'Wimpel "You are loved"',               category: 'Wanddeko',     price: '14,90 €', img: 'https://cdn.shopify.com/s/files/1/0652/9020/7489/files/wimpel_you_are_loved_IMG.jpg?width=800' },
-  { title: 'Wimpel "Gott ist immer bei dir"',      category: 'Wanddeko',     price: '14,90 €', img: 'https://cdn.shopify.com/s/files/1/0652/9020/7489/files/wimpel_immer_bei_dir_IMG.jpg?width=800' },
-  { title: 'Untersetzer "Mein Becher" Eiche',      category: 'Untersetzer',  price: '4,20 €',  img: 'https://cdn.shopify.com/s/files/1/0652/9020/7489/files/meinBecher1_UntersetzerHolz_IMG.jpg?width=800' },
-  { title: 'Untersetzer "Gesegnet" Eiche',         category: 'Untersetzer',  price: '4,20 €',  img: 'https://cdn.shopify.com/s/files/1/0652/9020/7489/files/gesegnet1_UntersetzerHolz_IMG.jpg?width=800' },
-  { title: 'Brettchen "Seine Gnade" Eiche',        category: 'Schneidebrett',price: '11,90 €', img: 'https://cdn.shopify.com/s/files/1/0652/9020/7489/files/SeineGnade_LENA.jpg?width=800' },
-  { title: 'Brettchen "Mein Hirte" Eiche',         category: 'Schneidebrett',price: '11,90 €', img: 'https://cdn.shopify.com/s/files/1/0652/9020/7489/files/meinHirte_LENA-Photoroom.jpg?width=800' },
-  { title: 'Trinkflasche "Soli Deo Gloria"',       category: 'Trinkflasche', price: '19,90 €', img: 'https://cdn.shopify.com/s/files/1/0652/9020/7489/files/Edelstahlflasche_SoliDeoGloria1_IMG.jpg?width=800' },
-  { title: 'Trinkflasche "Frucht des Geistes"',    category: 'Trinkflasche', price: '19,90 €', img: 'https://cdn.shopify.com/s/files/1/0652/9020/7489/files/Edelstahlflasche_FruchtDesGeistes1_IMG.jpg?width=800' },
-  { title: 'Fußmatte "Ich aber und mein Haus"',    category: 'Fußmatte',     price: '32,90 €', img: 'https://cdn.shopify.com/s/files/1/0652/9020/7489/files/11.jpg?width=800' },
-  { title: 'Fußmatte "Meines Fußes Leuchte"',      category: 'Fußmatte',     price: '32,90 €', img: 'https://cdn.shopify.com/s/files/1/0652/9020/7489/files/8_ff7b4168-92f6-4368-a7c1-0df8e1baf4dd.jpg?width=800' },
-  { title: 'Buchstütze "Seine Gnade"',             category: 'Buchstütze',   price: '18,90 €', img: 'https://cdn.shopify.com/s/files/1/0652/9020/7489/files/buchhalter_seine_Gnade1_IMG.jpg?width=800' },
-  { title: 'Buchstütze "Prüft alles"',             category: 'Buchstütze',   price: '18,90 €', img: 'https://cdn.shopify.com/s/files/1/0652/9020/7489/files/buchhalter_prueft_alles1_IMG.jpg?width=800' },
-  { title: 'Tasse "Sorgt euch um nichts"',         category: 'Tasse',        price: '19,90 €', img: 'https://cdn.shopify.com/s/files/1/0652/9020/7489/files/IMG_Tasse_BIGGY.jpg?width=800' },
-  { title: 'Handgemachte Tasse "Selah"',           category: 'Tasse',        price: '17,90 €', img: 'https://cdn.shopify.com/s/files/1/0652/9020/7489/files/Rusty-M_Selah1.jpg?width=800' },
-  { title: 'Thermotasse "Start your day"',         category: 'Glas-Tasse',   price: '19,90 €', img: 'https://cdn.shopify.com/s/files/1/0652/9020/7489/files/LUCY_IMG_StartYourDay1.jpg?width=800' },
-  { title: 'Thermotasse "Mein Hirte"',             category: 'Glas-Tasse',   price: '19,90 €', img: 'https://cdn.shopify.com/s/files/1/0652/9020/7489/files/LUCY_IMG_MeinHirte1.jpg?width=800' },
+// ── Banner slides (from im-glauben.de homepage slideshow) ──
+const BANNERS = [
+  {
+    img:      'https://im-glauben.de/cdn/shop/files/3_6752e6a8-811e-4e18-8015-2aee04920019.jpg?width=1800',
+    eyebrow:  'NEU',
+    headline: 'Fußmatten',
+  },
+  {
+    img:      'https://im-glauben.de/cdn/shop/files/banner_trinkflaschen_edelstahl_glas_v2.jpg?width=1800',
+    eyebrow:  'Schlicht im Design. Stark im Glauben.',
+    headline: 'Trinkflaschen',
+  },
+  {
+    img:      'https://im-glauben.de/cdn/shop/files/Shopify_banner_5.jpg?width=1800',
+    eyebrow:  'Handmade',
+    headline: 'Trinkgeschirr aus Steingut & Glas',
+  },
+  {
+    img:      'https://im-glauben.de/cdn/shop/files/buchstuetze_banner1.jpg?width=1800',
+    eyebrow:  'NEU',
+    headline: 'Buchstütze',
+  },
 ];
 
-// ── Utilities ────────────────────────────────────────
-function shuffle(arr) {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
+// Preload banner images
+BANNERS.forEach(b => { const i = new Image(); i.src = b.img; });
 
-function salePrice(priceStr) {
-  const n = parseFloat(priceStr.replace(',','.').replace(' €',''));
-  return (n * 0.8).toFixed(2).replace('.',',') + ' €';
-}
-
-// ── Build product slides ──────────────────────────────
-const shuffled = shuffle(PRODUCTS);
-const container = document.getElementById('product-slides');
-const pairs = [];
-for (let i = 0; i < shuffled.length; i += 2) {
-  if (i + 1 < shuffled.length) {
-    pairs.push([shuffled[i], shuffled[i+1]]);
-  } else {
-    pairs.push([shuffled[i]]); // solo – odd one out
-  }
-}
-
-pairs.forEach((pair, idx) => {
+// Build banner slides
+const container = document.getElementById('banner-slides');
+BANNERS.forEach((b, idx) => {
   const slide = document.createElement('div');
-  const isSolo = pair.length === 1;
-  slide.className = 'slide slide-products' + (isSolo ? ' slide-solo' : '');
-  slide.id = 'slide-prod-' + idx;
-
+  slide.className = 'slide slide-banner';
+  slide.id = 'slide-banner-' + idx;
   slide.innerHTML = `
-    <div class="prod-logo-mark">
+    <div class="banner-img" style="background-image:url('${b.img}')"></div>
+    <div class="banner-logo">
       <img src="https://im-glauben.de/cdn/shop/files/www.im-glauben.de.png?v=1693408582" alt="ImGlauben" />
     </div>
-    ${pair.map(p => `
-      <div class="product-panel">
-        <div class="product-img" style="background-image:url('${p.img}')"></div>
-        <div class="product-info">
-          <div class="product-category">${p.category}</div>
-          <div class="product-name">${p.title}</div>
-          <div class="product-prices">
-            <span class="product-price-orig">${p.price}</span>
-            <span class="product-price-sale">${salePrice(p.price)}</span>
-            <span class="product-badge">−20&thinsp;%</span>
-          </div>
-        </div>
+    <div class="banner-info">
+      <div class="banner-eyebrow">${b.eyebrow}</div>
+      <div class="banner-headline">${b.headline}</div>
+      <div class="banner-offer">
+        <div class="banner-price">&#8722;20&thinsp;%</div>
+        <div class="banner-badge">Hirtenkonferenz</div>
       </div>
-    `).join('')}
+      <div class="banner-scan">QR-Code scannen &middot; im-glauben.de</div>
+    </div>
   `;
   container.appendChild(slide);
 });
 
-// ── Slide sequence ───────────────────────────────────
-// Pattern: QR(12s) → Hero(7s) → 2×Prod(9s) → QR(9s) → 2×Prod → Insta(11s) → 2×Prod → QR → …
-function buildSequence(numPairs) {
+// ── Sequence: QR(12s) → Hero(7s) → Banner(10s) → QR(10s) → Banner(10s) → Insta(12s) → Banner(10s) → Banner(10s) → QR … ──
+function buildSequence() {
   const ids  = [];
   const durs = [];
+
   ids.push('slide-qr');   durs.push(12000);
   ids.push('slide-hero'); durs.push(7000);
 
-  let p = 0, block = 0;
-  while (p < numPairs) {
-    // 2 product slides per block
-    for (let k = 0; k < 2 && p < numPairs; k++, p++) {
-      ids.push('slide-prod-' + p); durs.push(9000);
-    }
-    // Interstitial: alternate QR and Instagram
-    if (p < numPairs) {
-      if (block % 2 === 0) { ids.push('slide-qr');        durs.push(12000); }
-      else                  { ids.push('slide-instagram'); durs.push(12000); }
-      block++;
-    }
-  }
-  // Final QR before loop
-  ids.push('slide-qr'); durs.push(12000);
+  // interleave all 4 banners with QR/insta breaks
+  BANNERS.forEach((_, i) => {
+    ids.push('slide-banner-' + i); durs.push(10000);
+    if (i === 1) { ids.push('slide-qr');        durs.push(10000); }
+    if (i === 3) { ids.push('slide-instagram'); durs.push(12000); }
+  });
+
+  // end with QR before looping
+  ids.push('slide-qr'); durs.push(10000);
   return { ids, durs };
 }
 
-const { ids: SLIDE_IDS, durs: SLIDE_DUR } = buildSequence(pairs.length);
-let currentIdx    = 0;
-let progressTimer = null;
+const { ids: SLIDE_IDS, durs: SLIDE_DUR } = buildSequence();
+let currentIdx = 0, progressTimer = null;
 
 // Dots
 const dotsEl = document.getElementById('dots');
@@ -684,45 +585,42 @@ SLIDE_IDS.forEach((_,i) => {
   d.className = 'dot' + (i===0 ? ' active' : '');
   dotsEl.appendChild(d);
 });
-function getDot(i) { return dotsEl.children[i]; }
+const getDot = i => dotsEl.children[i];
 
 function goToSlide(idx) {
-  const prev = document.getElementById(SLIDE_IDS[currentIdx]);
-  const next = document.getElementById(SLIDE_IDS[idx]);
-  if (prev) { prev.classList.remove('active'); getDot(currentIdx).classList.remove('active'); }
+  document.getElementById(SLIDE_IDS[currentIdx]).classList.remove('active');
+  getDot(currentIdx).classList.remove('active');
   currentIdx = idx;
-  next.classList.add('active');
+  document.getElementById(SLIDE_IDS[currentIdx]).classList.add('active');
   getDot(currentIdx).classList.add('active');
-  startProgress(SLIDE_DUR[idx]);
+  startProgress(SLIDE_DUR[currentIdx]);
 }
-
 function nextSlide() { goToSlide((currentIdx + 1) % SLIDE_IDS.length); }
 
-function startProgress(duration) {
+function startProgress(dur) {
   clearTimeout(progressTimer);
   const bar = document.getElementById('progress-bar');
-  bar.style.transition = 'none';
-  bar.style.width = '0%';
+  bar.style.transition = 'none'; bar.style.width = '0%';
   void bar.offsetWidth;
-  bar.style.transition = `width ${duration}ms linear`;
+  bar.style.transition = `width ${dur}ms linear`;
   bar.style.width = '100%';
-  progressTimer = setTimeout(nextSlide, duration);
+  progressTimer = setTimeout(nextSlide, dur);
 }
 
 startProgress(SLIDE_DUR[0]);
 
-// ── Tap to advance ───────────────────────────────────
+// Tap to advance
 document.getElementById('stage').addEventListener('click', () => {
   clearTimeout(progressTimer);
   nextSlide();
 });
 
-// ── QR Codes ─────────────────────────────────────────
-const QR_SHOP  = "https://timowse.github.io/im-glauben-qr/r.html";
-const QR_INSTA = "https://www.instagram.com/imglauben";
+// ── QR Codes ─────────────────────────────────────────────
+const QR_SHOP  = 'https://timowse.github.io/im-glauben-qr/r.html';
+const QR_INSTA = 'https://www.instagram.com/imglauben';
 
 function qrSize() {
-  return Math.floor(Math.min(window.innerHeight * .68, window.innerWidth * .40, 440));
+  return Math.floor(Math.min(window.innerHeight * .66, window.innerWidth * .38, 440));
 }
 
 function renderQR() {
@@ -732,10 +630,10 @@ function renderQR() {
   s.src = 'https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js';
   s.onload = () => { window._qrReady = true; drawQR(size); };
   s.onerror = () => {
-    [['qrCanvas', QR_SHOP, '1c1c1c'], ['qrCanvasInsta', QR_INSTA, '833ab4']].forEach(([id, url, col]) => {
+    [['qrCanvas', QR_SHOP], ['qrCanvasInsta', QR_INSTA]].forEach(([id, url]) => {
       const c = document.getElementById(id); if (!c) return;
       const img = document.createElement('img');
-      img.src = `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encodeURIComponent(url)}&qzone=1&color=${col}`;
+      img.src = `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encodeURIComponent(url)}&qzone=1&color=1c1c1c`;
       img.width = size; img.height = size; img.alt = 'QR Code';
       c.replaceWith(img);
     });
@@ -744,40 +642,29 @@ function renderQR() {
 }
 
 function drawQR(size) {
-  const el = document.getElementById('qrCanvas'); if (!el) return;
-  QRCode.toCanvas(el, QR_SHOP, { width: size, margin: 1,
-    color: { dark: '#1c1c1c', light: '#ffffff' }, errorCorrectionLevel: 'H'
-  }, err => { if (err) console.warn('QR error', err); });
-
-  const el2 = document.getElementById('qrCanvasInsta'); if (!el2) return;
-  QRCode.toCanvas(el2, QR_INSTA, { width: size, margin: 1,
-    color: { dark: '#833ab4', light: '#ffffff' }, errorCorrectionLevel: 'H'
-  }, err => { if (err) console.warn('QR insta error', err); });
+  const shop  = document.getElementById('qrCanvas');
+  const insta = document.getElementById('qrCanvasInsta');
+  if (shop)  QRCode.toCanvas(shop,  QR_SHOP,  { width: size, margin: 1, color: { dark: '#1c1c1c', light: '#ffffff' }, errorCorrectionLevel: 'H' }, e => e && console.warn(e));
+  if (insta) QRCode.toCanvas(insta, QR_INSTA, { width: size, margin: 1, color: { dark: '#833ab4', light: '#ffffff' }, errorCorrectionLevel: 'H' }, e => e && console.warn(e));
 }
 
-// ── ntfy.sh scan listener ────────────────────────────
-const TOPIC  = "imglaube-hk25-x7k9m2p4";
+// ── ntfy scan listener ────────────────────────────────────
 let reconnTm = null, toastTm = null;
-
 function showToast() {
   const t = document.getElementById('toast');
-  t.classList.add('show');
-  clearTimeout(toastTm);
+  t.classList.add('show'); clearTimeout(toastTm);
   toastTm = setTimeout(() => t.classList.remove('show'), 3500);
 }
 function connectSSE() {
-  const es = new EventSource("https://ntfy.sh/" + TOPIC + "/sse");
+  const es = new EventSource('https://ntfy.sh/imglaube-hk25-x7k9m2p4/sse');
   es.onmessage = e => {
-    try {
-      const msg = JSON.parse(e.data);
-      if (msg.event === 'keepalive') return;
-      if (msg.message === 'scanned') showToast();
-    } catch (_) { if (e.data === 'scanned') showToast(); }
+    try { const m = JSON.parse(e.data); if (m.event !== 'keepalive' && m.message === 'scanned') showToast(); }
+    catch(_) { if (e.data === 'scanned') showToast(); }
   };
   es.onerror = () => { es.close(); reconnTm = setTimeout(connectSSE, 5000); };
 }
 
-// ── Init ─────────────────────────────────────────────
+// ── Init ─────────────────────────────────────────────────
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', () => { renderQR(); connectSSE(); });
 } else { renderQR(); connectSSE(); }
@@ -785,7 +672,7 @@ if (document.readyState === 'loading') {
 window.addEventListener('orientationchange', () => setTimeout(renderQR, 350));
 
 async function requestWakeLock() {
-  try { if ('wakeLock' in navigator) await navigator.wakeLock.request('screen'); } catch (_) {}
+  try { if ('wakeLock' in navigator) await navigator.wakeLock.request('screen'); } catch(_) {}
 }
 requestWakeLock();
 document.addEventListener('visibilitychange', () => {
