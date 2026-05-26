@@ -604,12 +604,46 @@ function startProgress(dur) {
 
 startProgress(SLIDE_DUR[0]);
 
-// Tap to advance – überall, auch auf Links
-document.getElementById('stage').addEventListener('click', e => {
-  e.preventDefault();
-  clearTimeout(progressTimer);
-  nextSlide();
-});
+// ── Tap-Navigation: links zurück, mitte+rechts vor, halten = Pause ──
+const stage = document.getElementById('stage');
+let holdTimer = null;
+let isHolding = false;
+
+function pointerDown(e) {
+  isHolding = false;
+  holdTimer = setTimeout(() => {
+    isHolding = true;
+    // Pause: Progress-Bar einfrieren
+    const bar = document.getElementById('progress-bar');
+    const computed = getComputedStyle(bar).width;
+    bar.style.transition = 'none';
+    bar.style.width = computed;
+    clearTimeout(progressTimer);
+  }, 300);
+}
+
+function pointerUp(e) {
+  clearTimeout(holdTimer);
+  if (isHolding) {
+    // Loslassen: restliche Zeit fortsetzen (einfach neu starten mit voller Dauer)
+    isHolding = false;
+    startProgress(SLIDE_DUR[currentIdx]);
+    return;
+  }
+  // Tippen: linkes Drittel = zurück, sonst = vor
+  const x = e.changedTouches ? e.changedTouches[0].clientX : e.clientX;
+  const leftThird = window.innerWidth / 3;
+  if (x < leftThird) {
+    goToSlide((currentIdx - 1 + SLIDE_IDS.length) % SLIDE_IDS.length);
+  } else {
+    nextSlide();
+  }
+}
+
+stage.addEventListener('touchstart', pointerDown, { passive: true });
+stage.addEventListener('touchend',   pointerUp);
+stage.addEventListener('mousedown',  pointerDown);
+stage.addEventListener('mouseup',    pointerUp);
 
 // ── QR Codes ─────────────────────────────────────────────
 const QR_SHOP  = 'https://im-glauben.de';
