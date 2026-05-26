@@ -45,8 +45,7 @@
     /* ══ SLIDE SYSTEM ══════════════════════════ */
     #stage {
       position: fixed; inset: 0;
-      padding: env(safe-area-inset-top,0) env(safe-area-inset-right,0)
-               env(safe-area-inset-bottom,0) env(safe-area-inset-left,0);
+      /* No safe-area padding – content fills edge to edge incl. behind status bar & home indicator */
       cursor: pointer;
     }
     .slide {
