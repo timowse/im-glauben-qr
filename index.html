@@ -364,7 +364,54 @@
       filter: brightness(0) invert(1); opacity: .6;
     }
 
-    /* ══ TOAST ═════════════════════════════════ */
+    /* ══ ANIMATIONEN ═══════════════════════════ */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    /* Banner-Slides: gestaffelter Text-Reveal */
+    .slide.active .banner-eyebrow {
+      animation: fadeUp .55s cubic-bezier(.22,.68,0,1.1) .15s both;
+    }
+    .slide.active .banner-headline {
+      animation: fadeUp .65s cubic-bezier(.22,.68,0,1.1) .32s both;
+    }
+    .slide.active .banner-offer {
+      animation: fadeUp .55s cubic-bezier(.22,.68,0,1.1) .52s both;
+    }
+    .slide.active .banner-scan {
+      animation: fadeIn .5s ease .72s both;
+    }
+
+    /* QR-Slide: gestaffeltes Fade-In */
+    .slide.active .info-offer {
+      animation: fadeUp .6s cubic-bezier(.22,.68,0,1.1) .2s both;
+    }
+    .slide.active .info-pill {
+      animation: fadeUp .5s cubic-bezier(.22,.68,0,1.1) .4s both;
+    }
+    .slide.active .info-url {
+      animation: fadeIn .45s ease .55s both;
+    }
+    .slide.active .info-note {
+      animation: fadeIn .45s ease .65s both;
+    }
+    .slide.active .qr-wrap {
+      animation: fadeUp .6s cubic-bezier(.22,.68,0,1.1) .3s both;
+    }
+    .slide.active .qr-label {
+      animation: fadeIn .4s ease .6s both;
+    }
+
+    /* Instagram-Slide: gleich wie QR */
+    .slide.active .insta-handle {
+      animation: fadeUp .65s cubic-bezier(.22,.68,0,1.1) .2s both;
+    }
     #toast {
       position: fixed; top: clamp(16px,2.5vw,28px); right: clamp(16px,2.5vw,28px);
       z-index: 200; background: var(--white);
@@ -585,10 +632,15 @@ SLIDE_IDS.forEach((_,i) => {
 const getDot = i => dotsEl.children[i];
 
 function goToSlide(idx) {
-  document.getElementById(SLIDE_IDS[currentIdx]).classList.remove('active');
+  const prevEl = document.getElementById(SLIDE_IDS[currentIdx]);
+  const nextEl = document.getElementById(SLIDE_IDS[idx]);
+  prevEl.classList.remove('active');
   getDot(currentIdx).classList.remove('active');
   currentIdx = idx;
-  document.getElementById(SLIDE_IDS[currentIdx]).classList.add('active');
+  // Kurzer Reflow damit CSS-Animationen neu starten
+  nextEl.classList.remove('active');
+  void nextEl.offsetWidth;
+  nextEl.classList.add('active');
   getDot(currentIdx).classList.add('active');
   startProgress(SLIDE_DUR[currentIdx]);
 }
