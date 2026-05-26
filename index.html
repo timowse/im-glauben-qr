@@ -282,7 +282,7 @@
     }
     .hero-sub {
       font-family: 'Nunito', sans-serif;
-      font-size: clamp(13px,1.2vw,17px); font-weight: 300;
+      font-size: clamp(18px,1.8vw,26px); font-weight: 300;
       color: rgba(255,255,255,.38); letter-spacing: .06em;
       text-transform: uppercase;
     }
@@ -303,10 +303,8 @@
     }
 
     /* solo product: centered with visual framing */
-    .slide-solo .product-panel {
-      flex: 0 0 62%;
-      margin: 0 auto;
-    }
+    .slide-solo { justify-content: center; }
+    .slide-solo .product-panel { flex: 0 0 72%; }
 
     .product-img {
       position: absolute; inset: 0;
@@ -325,36 +323,35 @@
       position: absolute; inset: 0;
       background: linear-gradient(
         to bottom,
-        rgba(28,28,28,0) 22%,
-        rgba(28,28,28,.45) 60%,
-        rgba(28,28,28,.90) 100%
+        rgba(28,28,28,0) 18%,
+        rgba(28,28,28,.55) 58%,
+        rgba(28,28,28,.92) 100%
       );
       z-index: 1;
     }
 
     .product-info {
       position: absolute; bottom: 0; left: 0; right: 0;
-      padding: clamp(20px,3vw,44px) clamp(22px,3vw,44px) clamp(32px,4.5vh,60px);
+      padding: clamp(20px,3vw,44px) clamp(28px,3vw,44px) clamp(44px,5vh,68px);
       z-index: 2;
-      display: flex; flex-direction: column; gap: clamp(6px,1vh,10px);
+      display: flex; flex-direction: column; gap: clamp(10px,1.6vh,18px);
     }
 
     /* category label */
     .product-category {
       display: inline-flex; align-items: center;
       width: fit-content;
-      font-size: clamp(9px,.8vw,12px); font-weight: 600;
+      font-size: clamp(14px,1.4vw,20px); font-weight: 600;
       letter-spacing: .10em; text-transform: uppercase;
       color: var(--teal);
       background: rgba(16,132,116,.18);
       border: 1px solid rgba(16,132,116,.35);
       border-radius: 4px;
-      padding: 3px 9px;
-      text-shadow: none;
+      padding: 5px 14px;
     }
 
     .product-name {
-      font-size: clamp(16px,2.1vw,30px); font-weight: 500;
+      font-size: clamp(36px,3.8vw,56px); font-weight: 500;
       color: var(--white); line-height: 1.2;
       letter-spacing: .01em;
       text-shadow: 0 2px 20px rgba(0,0,0,.7), 0 1px 4px rgba(0,0,0,.5);
@@ -366,26 +363,26 @@
     }
 
     .product-prices {
-      display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+      display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap;
     }
     .product-price-orig {
       font-family: 'Nunito', sans-serif;
-      font-size: clamp(12px,1.1vw,16px); font-weight: 300;
+      font-size: clamp(20px,1.8vw,28px); font-weight: 300;
       color: rgba(255,255,255,.45);
       text-decoration: line-through;
       text-shadow: 0 1px 8px rgba(0,0,0,.5);
     }
     .product-price-sale {
-      font-size: clamp(18px,2.2vw,30px); font-weight: 600;
+      font-size: clamp(36px,3.8vw,52px); font-weight: 600;
       color: var(--gold);
       text-shadow: 0 2px 16px rgba(0,0,0,.6);
     }
     .product-badge {
       display: inline-block;
       background: var(--teal); color: var(--white);
-      font-size: clamp(9px,.85vw,12px); font-weight: 700;
+      font-size: clamp(12px,1.1vw,16px); font-weight: 700;
       letter-spacing: .06em; text-transform: uppercase;
-      border-radius: 4px; padding: 3px 8px;
+      border-radius: 4px; padding: 4px 10px;
       vertical-align: middle;
     }
 
@@ -666,13 +663,13 @@ function buildSequence(numPairs) {
     }
     // Interstitial: alternate QR and Instagram
     if (p < numPairs) {
-      if (block % 2 === 0) { ids.push('slide-qr');        durs.push(9000); }
-      else                  { ids.push('slide-instagram'); durs.push(11000); }
+      if (block % 2 === 0) { ids.push('slide-qr');        durs.push(12000); }
+      else                  { ids.push('slide-instagram'); durs.push(12000); }
       block++;
     }
   }
   // Final QR before loop
-  ids.push('slide-qr'); durs.push(9000);
+  ids.push('slide-qr'); durs.push(12000);
   return { ids, durs };
 }
 
