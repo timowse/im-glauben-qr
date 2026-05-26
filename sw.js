@@ -1,6 +1,6 @@
 // Service Worker – ImGlauben Kiosk
-// Caches the app shell for offline / faster startup
-const CACHE = 'imglaube-kiosk-v1';
+// Auto-update: neue Version wird sofort aktiviert ohne manuellen Reload
+const CACHE = 'imglaube-kiosk-v2';
 const PRECACHE = [
   '/im-glauben-qr/',
   '/im-glauben-qr/index.html',
@@ -11,6 +11,7 @@ self.addEventListener('install', e => {
   e.waitUntil(
     caches.open(CACHE).then(c => c.addAll(PRECACHE))
   );
+  // Sofort aktivieren – nicht auf Tab-Schließen warten
   self.skipWaiting();
 });
 
@@ -18,19 +19,31 @@ self.addEventListener('activate', e => {
   e.waitUntil(
     caches.keys().then(keys =>
       Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
-    )
+    ).then(() => {
+      // Alle offenen Tabs/Fenster sofort übernehmen
+      return self.clients.claim();
+    }).then(() => {
+      // Allen Clients sagen: bitte neu laden
+      return self.clients.matchAll({ type: 'window' }).then(clients => {
+        clients.forEach(client => client.navigate(client.url));
+      });
+    })
   );
-  self.clients.claim();
 });
 
 self.addEventListener('fetch', e => {
-  // Network-first for CDN images (always fresh), cache-first for app shell
-  const url = new URL(e.request.url);
-  if (url.hostname.includes('shopify') || url.hostname.includes('googleapis') || url.hostname.includes('jsdelivr')) {
-    e.respondWith(fetch(e.request).catch(() => caches.match(e.request)));
-  } else {
-    e.respondWith(
-      caches.match(e.request).then(cached => cached || fetch(e.request))
-    );
-  }
+  // Netzwerk zuerst für alle Requests – damit Updates immer ankommen
+  // Fallback auf Cache nur wenn offline
+  e.respondWith(
+    fetch(e.request)
+      .then(response => {
+        // Erfolgreiche Antwort auch im Cache speichern
+        if (response.ok && e.request.method === 'GET') {
+          const clone = response.clone();
+          caches.open(CACHE).then(c => c.put(e.request, clone));
+        }
+        return response;
+      })
+      .catch(() => caches.match(e.request))
+  );
 });
