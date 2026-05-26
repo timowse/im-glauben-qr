@@ -612,8 +612,9 @@ function startProgress(dur) {
 
 startProgress(SLIDE_DUR[0]);
 
-// Tap to advance
-document.getElementById('stage').addEventListener('click', () => {
+// Tap to advance – überall, auch auf Links
+document.getElementById('stage').addEventListener('click', e => {
+  e.preventDefault();
   clearTimeout(progressTimer);
   nextSlide();
 });
