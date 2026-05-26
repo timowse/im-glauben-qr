@@ -494,15 +494,7 @@
 
 </div>
 
-<!-- Toast -->
-<div id="toast">
-  <div class="toast-icon">&#10003;</div>
-  <div>
-    <div class="toast-title">Code gescannt!</div>
-    <div class="toast-sub">Weiterleitung zu im-glauben.de</div>
-  </div>
-</div>
-
+<!-- Progress + Dots -->
 <div id="progress"><div id="progress-bar"></div></div>
 <div id="dots"></div>
 
@@ -620,7 +612,7 @@ document.getElementById('stage').addEventListener('click', e => {
 });
 
 // ── QR Codes ─────────────────────────────────────────────
-const QR_SHOP  = 'https://timowse.github.io/im-glauben-qr/r.html';
+const QR_SHOP  = 'https://im-glauben.de';
 const QR_INSTA = 'https://www.instagram.com/imglauben';
 
 function qrSize() {
@@ -652,26 +644,10 @@ function drawQR(size) {
   if (insta) QRCode.toCanvas(insta, QR_INSTA, { width: size, margin: 1, color: { dark: '#833ab4', light: '#ffffff' }, errorCorrectionLevel: 'H' }, e => e && console.warn(e));
 }
 
-// ── ntfy scan listener ────────────────────────────────────
-let reconnTm = null, toastTm = null;
-function showToast() {
-  const t = document.getElementById('toast');
-  t.classList.add('show'); clearTimeout(toastTm);
-  toastTm = setTimeout(() => t.classList.remove('show'), 3500);
-}
-function connectSSE() {
-  const es = new EventSource('https://ntfy.sh/imglaube-hk25-x7k9m2p4/sse');
-  es.onmessage = e => {
-    try { const m = JSON.parse(e.data); if (m.event !== 'keepalive' && m.message === 'scanned') showToast(); }
-    catch(_) { if (e.data === 'scanned') showToast(); }
-  };
-  es.onerror = () => { es.close(); reconnTm = setTimeout(connectSSE, 5000); };
-}
-
 // ── Init ─────────────────────────────────────────────────
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', () => { renderQR(); connectSSE(); });
-} else { renderQR(); connectSSE(); }
+  document.addEventListener('DOMContentLoaded', () => { renderQR(); });
+} else { renderQR(); }
 
 window.addEventListener('orientationchange', () => setTimeout(renderQR, 350));
 
