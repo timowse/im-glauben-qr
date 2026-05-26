@@ -1,0 +1,25 @@
+{
+  "name": "ImGlauben Hirtenkonferenz",
+  "short_name": "ImGlauben",
+  "description": "Christliche Geschenk- und Dekoartikel – 20% Rabatt auf der Hirtenkonferenz",
+  "start_url": "/im-glauben-qr/",
+  "scope": "/im-glauben-qr/",
+  "display": "fullscreen",
+  "orientation": "landscape",
+  "background_color": "#1c1c1c",
+  "theme_color": "#1c1c1c",
+  "icons": [
+    {
+      "src": "https://im-glauben.de/cdn/shop/files/www.im-glauben.de_1.jpg?v=1737767526&width=192",
+      "sizes": "192x192",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://im-glauben.de/cdn/shop/files/www.im-glauben.de_1.jpg?v=1737767526&width=512",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    }
+  ]
+}
